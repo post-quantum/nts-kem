@@ -1,0 +1,501 @@
+NTS-KEM 
+=======
+This directory contains the files submitted to NIST as part of the
+Post-Quantum Cryptography Standardization Process.
+
+For information on how to build our NTS-KEM library, either the reference implementation 
+or the one that is optimized for 64-bit/SSE2/SSE4.1/AVX2 platforms, please refer to the 
+corresponding README file. Likewise, the information on how to obtain the KAT and 
+intermediate value files are given in the these same respective README files.
+
+
+NTS-KEM team (in alphabetical order):
+-------------------------------------
+- Martin Albrecht, martin.albrecht@rhul.ac.uk
+- Carlos Cid, carlos.cid@rhul.ac.uk
+- Kenneth G. Paterson, kenny.paterson@rhul.ac.uk
+- Cen Jung Tjhai, cjt@post-quantum.com
+- Martin Tomlinson, mt@post-quantum.com
+
+
+The contents of this directory are:
+-----------------------------------
+README - this file
+
+Supporting_Documentation:
+    nts-kem.pdf - The main document of the submission
+
+Reference_Implementation:
+    kem/nts_kem_12_64 - the ANSI C code of the reference implementation of NTS-KEM(12, 64)
+        README - contains information on compilation and generating KATs
+        Makefile - script to compile/clean NTS-KEM(12,64)
+        additive_fft.c - part of reference implementation
+        additive_fft.h - part of reference implementation
+        api.h - contains parameters specific to this implementation
+        berlekamp_massey.c - part of reference implementation
+        berlekamp_massey.h - part of reference implementation
+        bits.h - part of reference implementation
+        ff.c - part of reference implementation
+        ff.h - part of reference implementation
+        keccak.c - Keccak implementation from https://github.com/gvanas/KeccakCodePackage
+        keccak.h - Keccak implementation from https://github.com/gvanas/KeccakCodePackage
+        kem.c - part of reference implementation
+        m4r.c - part of reference implementation
+        m4r.h - part of reference implementation
+        matrix_ff2.c - part of reference implementation
+        matrix_ff2.h - part of reference implementation
+        nist/PQCkenKAT_kem.c - NIST KAT generator
+        nist/aes_drbg.c - NIST AES_DRBG_CTR rng generator
+        nist/aes_drbg.h - NIST AES_DRBG_CTR rng generator
+        nts_kem.c - part of reference implementation: key-gen, encap and decap are defined here
+        nts_kem.h - part of reference implementation
+        nts_kem_errors.h - part of reference implementation
+        nts_kem_params.h - part of reference implementation
+        polynomial.c - part of reference implementation
+        polynomial.h - part of reference implementation
+        random.c - part of reference implementation
+        random.h - part of reference implementation
+        stack.c - part of reference implementation
+        stack.h - part of reference implementation
+        test/main.c - test code for this parameter
+        test/ntskem_test.c - test code for this parameter
+        test/ntskem_test.h - test code for this parameter
+
+    kem/nts_kem_13_80 - the ANSI C code of the reference implementation of NTS-KEM(13, 80)
+        README - contains information on compilation and generating KATs
+        Makefile - script to compile/clean NTS-KEM(13,80)
+        additive_fft.c - part of reference implementation
+        additive_fft.h - part of reference implementation
+        api.h - contains parameters specific to this implementation
+        berlekamp_massey.c - part of reference implementation
+        berlekamp_massey.h - part of reference implementation
+        bits.h - part of reference implementation
+        ff.c - part of reference implementation
+        ff.h - part of reference implementation
+        keccak.c - Keccak implementation from https://github.com/gvanas/KeccakCodePackage
+        keccak.h - Keccak implementation from https://github.com/gvanas/KeccakCodePackage
+        kem.c - part of reference implementation
+        m4r.c - part of reference implementation
+        m4r.h - part of reference implementation
+        matrix_ff2.c - part of reference implementation
+        matrix_ff2.h - part of reference implementation
+        nist/PQCkenKAT_kem.c - NIST KAT generator
+        nist/aes_drbg.c - NIST AES_DRBG_CTR rng generator
+        nist/aes_drbg.h - NIST AES_DRBG_CTR rng generator
+        nts_kem.c - part of reference implementation: key-gen, encap and decap are defined here
+        nts_kem.h - part of reference implementation
+        nts_kem_errors.h - part of reference implementation
+        nts_kem_params.h - part of reference implementation
+        polynomial.c - part of reference implementation
+        polynomial.h - part of reference implementation
+        random.c - part of reference implementation
+        random.h - part of reference implementation
+        stack.c - part of reference implementation
+        stack.h - part of reference implementation
+        test/main.c - test code for this parameter
+        test/ntskem_test.c - test code for this parameter
+        test/ntskem_test.h - test code for this parameter
+
+    kem/nts_kem_13_136 - the ANSI C code of the reference implementation of NTS-KEM(13, 136)
+        README - contains information on compilation and generating KATs
+        Makefile - script to compile/clean NTS-KEM(13,136)
+        additive_fft.c - part of reference implementation
+        additive_fft.h - part of reference implementation
+        api.h - contains parameters specific to this implementation
+        berlekamp_massey.c - part of reference implementation
+        berlekamp_massey.h - part of reference implementation
+        bits.h - part of reference implementation
+        ff.c - part of reference implementation
+        ff.h - part of reference implementation
+        keccak.c - Keccak implementation from https://github.com/gvanas/KeccakCodePackage
+        keccak.h - Keccak implementation from https://github.com/gvanas/KeccakCodePackage
+        kem.c - part of reference implementation
+        m4r.c - part of reference implementation
+        m4r.h - part of reference implementation
+        matrix_ff2.c - part of reference implementation
+        matrix_ff2.h - part of reference implementation
+        nist/PQCkenKAT_kem.c - NIST KAT generator
+        nist/aes_drbg.c - NIST AES_DRBG_CTR rng generator
+        nist/aes_drbg.h - NIST AES_DRBG_CTR rng generator
+        nts_kem.c - part of reference implementation: key-gen, encap and decap are defined here
+        nts_kem.h - part of reference implementation
+        nts_kem_errors.h - part of reference implementation
+        nts_kem_params.h - part of reference implementation
+        polynomial.c - part of reference implementation
+        polynomial.h - part of reference implementation
+        random.c - part of reference implementation
+        random.h - part of reference implementation
+        stack.c - part of reference implementation
+        stack.h - part of reference implementation
+        test/main.c - test code for this parameter
+        test/ntskem_test.c - test code for this parameter
+        test/ntskem_test.h - test code for this parameter
+
+Optimized_Implementation:
+    kem/nts_kem_12_64 - the Intel 64-bit optimized ANSI C implementation of NTS-KEM(12, 64)
+        README - contains information on compilation and generating KATs
+        Makefile - script to compile/clean NTS-KEM(12,64)
+        api.h - contains parameters specific to this implementation
+        bit-slice/a64_consts.h - part of 64-bit optimized implementation
+        bit-slice/bitslice_bma_64.c - part of 64-bit optimized implementation
+        bit-slice/bitslice_bma_64.h - part of 64-bit optimized implementation
+        bit-slice/bitslice_fft_64.c - part of 64-bit optimized implementation
+        bit-slice/bitslice_fft_64.h - part of 64-bit optimized implementation
+        bit-slice/twiddles.h - part of 64-bit optimized implementation
+        bit-slice/twist_factors_12.h - part of 64-bit optimized implementation
+        bit-slice/vector_utils.c - part of 64-bit optimized implementation
+        bit-slice/vector_utils.h - part of 64-bit optimized implementation
+        bits.h - part of 64-bit optimized implementation
+        ff.c - part of 64-bit optimized implementation
+        ff.h - part of 64-bit optimized implementation
+        keccak.c - Implementation from https://github.com/coruus/keccak-tiny/blob/singlefile/keccak-tiny.h
+        keccak.h - Implementation from https://github.com/coruus/keccak-tiny/blob/singlefile/keccak-tiny.h
+        kem.c - part of 64-bit optimized implementation
+        m4r.c - part of 64-bit optimized implementation
+        m4r.h - part of 64-bit optimized implementation
+        matrix_ff2.c - part of 64-bit optimized implementation
+        matrix_ff2.h - part of 64-bit optimized implementation
+        nist/PQCkenKAT_kem.c - NIST KAT generator
+        nist/aes_drbg.c - NIST AES_DRBG_CTR rng generator
+        nist/aes_drbg.h - NIST AES_DRBG_CTR rng generator
+        nts_kem.c - part of reference implementation: key-gen, encap and decap are defined here
+        nts_kem.h - part of 64-bit optimized implementation
+        nts_kem_errors.h - part of 64-bit optimized implementation
+        nts_kem_params.h - part of 64-bit optimized implementation
+        polynomial.c - part of 64-bit optimized implementation
+        polynomial.h - part of 64-bit optimized implementation
+        random.c - part of 64-bit optimized implementation
+        random.h - part of 64-bit optimized implementation
+        test/main.c - test code for this parameter
+        test/ntskem_test.c - test code for this parameter
+        test/ntskem_test.h - test code for this parameter
+
+    kem/nts_kem_13_80 - the Intel 64-bit optimized ANSI C implementation of NTS-KEM(13, 80)
+        README - contains information on compilation and generating KATs
+        Makefile - script to compile/clean NTS-KEM(13,80)
+        api.h - contains parameters specific to this implementation
+        bit-slice/bitslice_bma_64.c - part of 64-bit optimized implementation
+        bit-slice/bitslice_bma_64.h - part of 64-bit optimized implementation
+        bit-slice/bitslice_fft_64.c - part of 64-bit optimized implementation
+        bit-slice/bitslice_fft_64.h - part of 64-bit optimized implementation
+        bit-slice/twiddles.h - part of 64-bit optimized implementation
+        bit-slice/twist_factors_13.h - part of 64-bit optimized implementation
+        bit-slice/vector_utils.c - part of 64-bit optimized implementation
+        bit-slice/vector_utils.h - part of 64-bit optimized implementation
+        bits.h - part of 64-bit optimized implementation
+        ff.c - part of 64-bit optimized implementation
+        ff.h - part of 64-bit optimized implementation
+        keccak.c - Implementation from https://github.com/coruus/keccak-tiny/blob/singlefile/keccak-tiny.h
+        keccak.h - Implementation from https://github.com/coruus/keccak-tiny/blob/singlefile/keccak-tiny.h
+        kem.c - part of 64-bit optimized implementation
+        m4r.c - part of 64-bit optimized implementation
+        m4r.h - part of 64-bit optimized implementation
+        matrix_ff2.c - part of 64-bit optimized implementation
+        matrix_ff2.h - part of 64-bit optimized implementation
+        nist/PQCkenKAT_kem.c - NIST KAT generator
+        nist/aes_drbg.c - NIST AES_DRBG_CTR rng generator
+        nist/aes_drbg.h - NIST AES_DRBG_CTR rng generator
+        nts_kem.c - part of reference implementation: key-gen, encap and decap are defined here
+        nts_kem.h - part of 64-bit optimized implementation
+        nts_kem_errors.h - part of 64-bit optimized implementation
+        nts_kem_params.h - part of 64-bit optimized implementation
+        polynomial.c - part of 64-bit optimized implementation
+        polynomial.h - part of 64-bit optimized implementation
+        random.c - part of 64-bit optimized implementation
+        random.h - part of 64-bit optimized implementation
+        test/main.c - test code for this parameter
+        test/ntskem_test.c - test code for this parameter
+        test/ntskem_test.h - test code for this parameter
+
+    kem/nts_kem_13_136 - the Intel 64-bit optimized ANSI C implementation of NTS-KEM(13, 136)
+        README - contains information on compilation and generating KATs
+        Makefile - script to compile/clean NTS-KEM(13,136)
+        api.h - contains parameters specific to this implementation
+        bit-slice/bitslice_bma_64.c - part of 64-bit optimized implementation
+        bit-slice/bitslice_bma_64.h - part of 64-bit optimized implementation
+        bit-slice/bitslice_fft_64.c - part of 64-bit optimized implementation
+        bit-slice/bitslice_fft_64.h - part of 64-bit optimized implementation
+        bit-slice/twiddles.h - part of 64-bit optimized implementation
+        bit-slice/twist_factors_13.h - part of 64-bit optimized implementation
+        bit-slice/vector_utils.c - part of 64-bit optimized implementation
+        bit-slice/vector_utils.h - part of 64-bit optimized implementation
+        bits.h - part of 64-bit optimized implementation
+        ff.c - part of 64-bit optimized implementation
+        ff.h - part of 64-bit optimized implementation
+        keccak.c - Implementation from https://github.com/coruus/keccak-tiny/blob/singlefile/keccak-tiny.h
+        keccak.h - Implementation from https://github.com/coruus/keccak-tiny/blob/singlefile/keccak-tiny.h
+        kem.c - part of 64-bit optimized implementation
+        m4r.c - part of 64-bit optimized implementation
+        m4r.h - part of 64-bit optimized implementation
+        matrix_ff2.c - part of 64-bit optimized implementation
+        matrix_ff2.h - part of 64-bit optimized implementation
+        nist/PQCkenKAT_kem.c - NIST KAT generator
+        nist/aes_drbg.c - NIST AES_DRBG_CTR rng generator
+        nist/aes_drbg.h - NIST AES_DRBG_CTR rng generator
+        nts_kem.c - part of reference implementation: key-gen, encap and decap are defined here
+        nts_kem.h - part of 64-bit optimized implementation
+        nts_kem_errors.h - part of 64-bit optimized implementation
+        nts_kem_params.h - part of 64-bit optimized implementation
+        polynomial.c - part of 64-bit optimized implementation
+        polynomial.h - part of 64-bit optimized implementation
+        random.c - part of 64-bit optimized implementation
+        random.h - part of 64-bit optimized implementation
+        test/main.c - test code for this parameter
+        test/ntskem_test.c - test code for this parameter
+        test/ntskem_test.h - test code for this parameter
+
+Additional_Implementation:
+    kem/nts_kem_12_64/avx2 - the AVX2 optimized ANSI C implementation of of NTS-KEM(12, 64)
+        README - contains information on compilation and generating KATs
+        Makefile - script to compile/clean NTS-KEM(12,64)
+        api.h - contains parameters specific to this implementation
+        bit-slice/a64_consts.h - part of AVX2 optimized implementation
+        bit-slice/bitslice_bma_128.c - part of AVX2 optimized implementation
+        bit-slice/bitslice_bma_128.h - part of AVX2 optimized implementation
+        bit-slice/bitslice_fft_256.c - part of AVX2 optimized implementation
+        bit-slice/bitslice_fft_256.h - part of AVX2 optimized implementation
+        bit-slice/twiddles.h - part of AVX2 optimized implementation
+        bit-slice/twist_factors_12.h - part of AVX2 optimized implementation
+        bit-slice/vector_utils.c - part of AVX2 optimized implementation
+        bit-slice/vector_utils.h - part of AVX2 optimized implementation
+        bits.h - part of AVX2 optimized implementation
+        ff.c - part of AVX2 optimized implementation
+        ff.h - part of AVX2 optimized implementation
+        keccak.c - Implementation from https://github.com/coruus/keccak-tiny/blob/singlefile/keccak-tiny.h
+        keccak.h - Implementation from https://github.com/coruus/keccak-tiny/blob/singlefile/keccak-tiny.h
+        kem.c - part of AVX2 optimized implementation
+        m4r.c - part of AVX2 optimized implementation
+        m4r.h - part of AVX2 optimized implementation
+        matrix_ff2.c - part of AVX2 optimized implementation
+        matrix_ff2.h - part of AVX2 optimized implementation
+        nist/PQCkenKAT_kem.c - NIST KAT generator
+        nist/aes_drbg.c - NIST AES_DRBG_CTR rng generator
+        nist/aes_drbg.h - NIST AES_DRBG_CTR rng generator
+        nts_kem.c - part of AVX2 optimized implementation: key-gen, encap and decap are defined here
+        nts_kem.h - part of AVX2 optimized implementation
+        nts_kem_errors.h - part of AVX2 optimized implementation
+        nts_kem_params.h - part of AVX2 optimized implementation
+        polynomial.c - part of AVX2 optimized implementation
+        polynomial.h - part of AVX2 optimized implementation
+        random.c - part of AVX2 optimized implementation
+        random.h - part of AVX2 optimized implementation
+        test/main.c - test code for this parameter
+        test/ntskem_test.c - test code for this parameter
+        test/ntskem_test.h - test code for this parameter
+        utils.c - part of AVX2 optimized implementation
+        utils.h - part of AVX2 optimized implementation
+
+    kem/nts_kem_12_64/sse2 - the SSE2/SSE4.1 optimized ANSI C implementation of of NTS-KEM(12, 64)
+        README - contains information on compilation and generating KATs
+        Makefile - script to compile/clean NTS-KEM(12,64)
+        api.h - contains parameters specific to this implementation
+        bit-slice/a64_consts.h - part of SSE2/SSE4.1 optimized implementation
+        bit-slice/bitslice_bma_128.c - part of SSE2/SSE4.1 optimized implementation
+        bit-slice/bitslice_bma_128.h - part of SSE2/SSE4.1 optimized implementation
+        bit-slice/bitslice_fft_128.c - part of SSE2/SSE4.1 optimized implementation
+        bit-slice/bitslice_fft_128.h - part of SSE2/SSE4.1 optimized implementation
+        bit-slice/twiddles.h - part of SSE2/SSE4.1 optimized implementation
+        bit-slice/twist_factors_12.h - part of SSE2/SSE4.1 optimized implementation
+        bit-slice/vector_utils.c - part of SSE2/SSE4.1 optimized implementation
+        bit-slice/vector_utils.h - part of SSE2/SSE4.1 optimized implementation
+        bits.h - part of SSE2/SSE4.1 optimized implementation
+        ff.c - part of SSE2/SSE4.1 optimized implementation
+        ff.h - part of SSE2/SSE4.1 optimized implementation
+        keccak.c - Implementation from https://github.com/coruus/keccak-tiny/blob/singlefile/keccak-tiny.h
+        keccak.h - Implementation from https://github.com/coruus/keccak-tiny/blob/singlefile/keccak-tiny.h
+        kem.c - part of SSE2/SSE4.1 optimized implementation
+        m4r.c - part of SSE2/SSE4.1 optimized implementation
+        m4r.h - part of SSE2/SSE4.1 optimized implementation
+        matrix_ff2.c - part of SSE2/SSE4.1 optimized implementation
+        matrix_ff2.h - part of SSE2/SSE4.1 optimized implementation
+        nist/PQCkenKAT_kem.c - NIST KAT generator
+        nist/aes_drbg.c - NIST AES_DRBG_CTR rng generator
+        nist/aes_drbg.h - NIST AES_DRBG_CTR rng generator
+        nts_kem.c - part of SSE2/SSE4.1 optimized implementation: key-gen, encap and decap are defined here
+        nts_kem.h - part of SSE2/SSE4.1 optimized implementation
+        nts_kem_errors.h - part of SSE2/SSE4.1 optimized implementation
+        nts_kem_params.h - part of SSE2/SSE4.1 optimized implementation
+        polynomial.c - part of SSE2/SSE4.1 optimized implementation
+        polynomial.h - part of SSE2/SSE4.1 optimized implementation
+        random.c - part of SSE2/SSE4.1 optimized implementation
+        random.h - part of SSE2/SSE4.1 optimized implementation
+        test/main.c - test code for this parameter
+        test/ntskem_test.c - test code for this parameter
+        test/ntskem_test.h - test code for this parameter
+        utils.c - part of SSE2/SSE4.1 optimized implementation
+        utils.h - part of SSE2/SSE4.1 optimized implementation
+
+    kem/nts_kem_13_80/avx2 - the AVX2 optimized ANSI C implementation of of NTS-KEM(13, 80)
+        README - contains information on compilation and generating KATs
+        Makefile - script to compile/clean NTS-KEM(13,80)
+        api.h - contains parameters specific to this implementation
+        bit-slice/bitslice_bma_128.c - part of AVX2 optimized implementation
+        bit-slice/bitslice_bma_128.h - part of AVX2 optimized implementation
+        bit-slice/bitslice_fft_256.c - part of AVX2 optimized implementation
+        bit-slice/bitslice_fft_256.h - part of AVX2 optimized implementation
+        bit-slice/twiddles.h - part of AVX2 optimized implementation
+        bit-slice/twist_factors_13.h - part of AVX2 optimized implementation
+        bit-slice/vector_utils.c - part of AVX2 optimized implementation
+        bit-slice/vector_utils.h - part of AVX2 optimized implementation
+        bits.h - part of AVX2 optimized implementation
+        ff.c - part of AVX2 optimized implementation
+        ff.h - part of AVX2 optimized implementation
+        keccak.c - Implementation from https://github.com/coruus/keccak-tiny/blob/singlefile/keccak-tiny.h
+        keccak.h - Implementation from https://github.com/coruus/keccak-tiny/blob/singlefile/keccak-tiny.h
+        kem.c - part of AVX2 optimized implementation
+        m4r.c - part of AVX2 optimized implementation
+        m4r.h - part of AVX2 optimized implementation
+        matrix_ff2.c - part of AVX2 optimized implementation
+        matrix_ff2.h - part of AVX2 optimized implementation
+        nist/PQCkenKAT_kem.c - NIST KAT generator
+        nist/aes_drbg.c - NIST AES_DRBG_CTR rng generator
+        nist/aes_drbg.h - NIST AES_DRBG_CTR rng generator
+        nts_kem.c - part of AVX2 optimized implementation: key-gen, encap and decap are defined here
+        nts_kem.h - part of AVX2 optimized implementation
+        nts_kem_errors.h - part of AVX2 optimized implementation
+        nts_kem_params.h - part of AVX2 optimized implementation
+        polynomial.c - part of AVX2 optimized implementation
+        polynomial.h - part of AVX2 optimized implementation
+        random.c - part of AVX2 optimized implementation
+        random.h - part of AVX2 optimized implementation
+        test/main.c - test code for this parameter
+        test/ntskem_test.c - test code for this parameter
+        test/ntskem_test.h - test code for this parameter
+        utils.c - part of AVX2 optimized implementation
+        utils.h - part of AVX2 optimized implementation
+
+    kem/nts_kem_13_80/sse2 - the SSE2/SSE4.1 optimized ANSI C implementation of of NTS-KEM(13, 80)
+        README - contains information on compilation and generating KATs
+        Makefile - script to compile/clean NTS-KEM(13,80)
+        api.h - contains parameters specific to this implementation
+        bit-slice/bitslice_bma_128.c - part of SSE2/SSE4.1 optimized implementation
+        bit-slice/bitslice_bma_128.h - part of SSE2/SSE4.1 optimized implementation
+        bit-slice/bitslice_fft_128.c - part of SSE2/SSE4.1 optimized implementation
+        bit-slice/bitslice_fft_128.h - part of SSE2/SSE4.1 optimized implementation
+        bit-slice/twiddles.h - part of SSE2/SSE4.1 optimized implementation
+        bit-slice/twist_factors_13.h - part of SSE2/SSE4.1 optimized implementation
+        bit-slice/vector_utils.c - part of SSE2/SSE4.1 optimized implementation
+        bit-slice/vector_utils.h - part of SSE2/SSE4.1 optimized implementation
+        bits.h - part of SSE2/SSE4.1 optimized implementation
+        ff.c - part of SSE2/SSE4.1 optimized implementation
+        ff.h - part of SSE2/SSE4.1 optimized implementation
+        keccak.c - Implementation from https://github.com/coruus/keccak-tiny/blob/singlefile/keccak-tiny.h
+        keccak.h - Implementation from https://github.com/coruus/keccak-tiny/blob/singlefile/keccak-tiny.h
+        kem.c - part of SSE2/SSE4.1 optimized implementation
+        m4r.c - part of SSE2/SSE4.1 optimized implementation
+        m4r.h - part of SSE2/SSE4.1 optimized implementation
+        matrix_ff2.c - part of SSE2/SSE4.1 optimized implementation
+        matrix_ff2.h - part of SSE2/SSE4.1 optimized implementation
+        nist/PQCkenKAT_kem.c - NIST KAT generator
+        nist/aes_drbg.c - NIST AES_DRBG_CTR rng generator
+        nist/aes_drbg.h - NIST AES_DRBG_CTR rng generator
+        nts_kem.c - part of SSE2/SSE4.1 optimized implementation: key-gen, encap and decap are defined here
+        nts_kem.h - part of SSE2/SSE4.1 optimized implementation
+        nts_kem_errors.h - part of SSE2/SSE4.1 optimized implementation
+        nts_kem_params.h - part of SSE2/SSE4.1 optimized implementation
+        polynomial.c - part of SSE2/SSE4.1 optimized implementation
+        polynomial.h - part of SSE2/SSE4.1 optimized implementation
+        random.c - part of SSE2/SSE4.1 optimized implementation
+        random.h - part of SSE2/SSE4.1 optimized implementation
+        test/main.c - test code for this parameter
+        test/ntskem_test.c - test code for this parameter
+        test/ntskem_test.h - test code for this parameter
+        utils.c - part of SSE2/SSE4.1 optimized implementation
+        utils.h - part of SSE2/SSE4.1 optimized implementation
+
+    kem/nts_kem_13_136/avx2 - the AVX2 optimized ANSI C implementation of of NTS-KEM(13, 136)
+        README - contains information on compilation and generating KATs
+        Makefile - script to compile/clean NTS-KEM(13,136)
+        api.h - contains parameters specific to this implementation
+        bit-slice/bitslice_bma_128.c - part of AVX2 optimized implementation
+        bit-slice/bitslice_bma_128.h - part of AVX2 optimized implementation
+        bit-slice/bitslice_fft_256.c - part of AVX2 optimized implementation
+        bit-slice/bitslice_fft_256.h - part of AVX2 optimized implementation
+        bit-slice/twiddles.h - part of AVX2 optimized implementation
+        bit-slice/twist_factors_13.h - part of AVX2 optimized implementation
+        bit-slice/vector_utils.c - part of AVX2 optimized implementation
+        bit-slice/vector_utils.h - part of AVX2 optimized implementation
+        bits.h - part of AVX2 optimized implementation
+        ff.c - part of AVX2 optimized implementation
+        ff.h - part of AVX2 optimized implementation
+        keccak.c - Implementation from https://github.com/coruus/keccak-tiny/blob/singlefile/keccak-tiny.h
+        keccak.h - Implementation from https://github.com/coruus/keccak-tiny/blob/singlefile/keccak-tiny.h
+        kem.c - part of AVX2 optimized implementation
+        m4r.c - part of AVX2 optimized implementation
+        m4r.h - part of AVX2 optimized implementation
+        matrix_ff2.c - part of AVX2 optimized implementation
+        matrix_ff2.h - part of AVX2 optimized implementation
+        nist/PQCkenKAT_kem.c - NIST KAT generator
+        nist/aes_drbg.c - NIST AES_DRBG_CTR rng generator
+        nist/aes_drbg.h - NIST AES_DRBG_CTR rng generator
+        nts_kem.c - part of AVX2 optimized implementation: key-gen, encap and decap are defined here
+        nts_kem.h - part of AVX2 optimized implementation
+        nts_kem_errors.h - part of AVX2 optimized implementation
+        nts_kem_params.h - part of AVX2 optimized implementation
+        polynomial.c - part of AVX2 optimized implementation
+        polynomial.h - part of AVX2 optimized implementation
+        random.c - part of AVX2 optimized implementation
+        random.h - part of AVX2 optimized implementation
+        test/main.c - test code for this parameter
+        test/ntskem_test.c - test code for this parameter
+        test/ntskem_test.h - test code for this parameter
+        utils.c - part of AVX2 optimized implementation
+        utils.h - part of AVX2 optimized implementation
+
+    kem/nts_kem_13_136/sse2 - the SSE2/SSE4.1 optimized ANSI C implementation of of NTS-KEM(13, 136)
+        README - contains information on compilation and generating KATs
+        Makefile - script to compile/clean NTS-KEM(13,136)
+        api.h - contains parameters specific to this implementation
+        bit-slice/bitslice_bma_128.c - part of SSE2/SSE4.1 optimized implementation
+        bit-slice/bitslice_bma_128.h - part of SSE2/SSE4.1 optimized implementation
+        bit-slice/bitslice_fft_128.c - part of SSE2/SSE4.1 optimized implementation
+        bit-slice/bitslice_fft_128.h - part of SSE2/SSE4.1 optimized implementation
+        bit-slice/twiddles.h - part of SSE2/SSE4.1 optimized implementation
+        bit-slice/twist_factors_13.h - part of SSE2/SSE4.1 optimized implementation
+        bit-slice/vector_utils.c - part of SSE2/SSE4.1 optimized implementation
+        bit-slice/vector_utils.h - part of SSE2/SSE4.1 optimized implementation
+        bits.h - part of SSE2/SSE4.1 optimized implementation
+        ff.c - part of SSE2/SSE4.1 optimized implementation
+        ff.h - part of SSE2/SSE4.1 optimized implementation
+        keccak.c - Implementation from https://github.com/coruus/keccak-tiny/blob/singlefile/keccak-tiny.h
+        keccak.h - Implementation from https://github.com/coruus/keccak-tiny/blob/singlefile/keccak-tiny.h
+        kem.c - part of SSE2/SSE4.1 optimized implementation
+        m4r.c - part of SSE2/SSE4.1 optimized implementation
+        m4r.h - part of SSE2/SSE4.1 optimized implementation
+        matrix_ff2.c - part of SSE2/SSE4.1 optimized implementation
+        matrix_ff2.h - part of SSE2/SSE4.1 optimized implementation
+        nist/PQCkenKAT_kem.c - NIST KAT generator
+        nist/aes_drbg.c - NIST AES_DRBG_CTR rng generator
+        nist/aes_drbg.h - NIST AES_DRBG_CTR rng generator
+        nts_kem.c - part of SSE2/SSE4.1 optimized implementation: key-gen, encap and decap are defined here
+        nts_kem.h - part of SSE2/SSE4.1 optimized implementation
+        nts_kem_errors.h - part of SSE2/SSE4.1 optimized implementation
+        nts_kem_params.h - part of SSE2/SSE4.1 optimized implementation
+        polynomial.c - part of SSE2/SSE4.1 optimized implementation
+        polynomial.h - part of SSE2/SSE4.1 optimized implementation
+        random.c - part of SSE2/SSE4.1 optimized implementation
+        random.h - part of SSE2/SSE4.1 optimized implementation
+        test/main.c - test code for this parameter
+        test/ntskem_test.c - test code for this parameter
+        test/ntskem_test.h - test code for this parameter
+        utils.c - part of SSE2/SSE4.1 optimized implementation
+        utils.h - part of SSE2/SSE4.1 optimized implementation
+
+KAT:
+    generate-kats.sh - a Bash script to generate the KATs and intermediate values
+
+    kem/nts_kem_12_64:
+        PQCkemKAT_9216.req - KAT request file of NTS-KEM(12, 64)
+        PQCkemKAT_9216.rsp - KAT response file of NTS-KEM(12, 64)
+        PQCkemKAT_9216.intval - Intermediate values from NTS-KEM(12, 64) reference implementation
+
+    kem/nts_kem_13_80:
+        PQCkemKAT_17524.req - KAT request file of NTS-KEM(13, 80)
+        PQCkemKAT_17524.rsp - KAT response file of NTS-KEM(13, 80)  
+        PQCkemKAT_17524.intval - Intermediate values from NTS-KEM(13, 80) reference implementation
+
+    kem/nts_kem_13_136:
+        PQCkemKAT_19890.req - KAT request file of NTS-KEM(13, 136)
+        PQCkemKAT_19890.rsp - KAT response file of NTS-KEM(13, 136)
+        PQCkemKAT_19890.intval - Intermediate values from NTS-KEM(13, 136) reference implementation
+

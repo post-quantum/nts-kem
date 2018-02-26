@@ -1,0 +1,546 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D7634F851FCF62EE00A1A478 /* api.h in Headers */ = {isa = PBXBuildFile; fileRef = D7634F631FCF62EE00A1A478 /* api.h */; };
+		D7634F861FCF62EE00A1A478 /* bitslice_bma_64.c in Sources */ = {isa = PBXBuildFile; fileRef = D7634F651FCF62EE00A1A478 /* bitslice_bma_64.c */; };
+		D7634F871FCF62EE00A1A478 /* bitslice_bma_64.h in Headers */ = {isa = PBXBuildFile; fileRef = D7634F661FCF62EE00A1A478 /* bitslice_bma_64.h */; };
+		D7634F881FCF62EE00A1A478 /* bitslice_fft_64.c in Sources */ = {isa = PBXBuildFile; fileRef = D7634F671FCF62EE00A1A478 /* bitslice_fft_64.c */; };
+		D7634F891FCF62EE00A1A478 /* bitslice_fft_64.h in Headers */ = {isa = PBXBuildFile; fileRef = D7634F681FCF62EE00A1A478 /* bitslice_fft_64.h */; };
+		D7634F8A1FCF62EE00A1A478 /* twiddles.h in Headers */ = {isa = PBXBuildFile; fileRef = D7634F691FCF62EE00A1A478 /* twiddles.h */; };
+		D7634F8B1FCF62EE00A1A478 /* twist_factors_13.h in Headers */ = {isa = PBXBuildFile; fileRef = D7634F6A1FCF62EE00A1A478 /* twist_factors_13.h */; };
+		D7634F8C1FCF62EE00A1A478 /* vector_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = D7634F6B1FCF62EE00A1A478 /* vector_utils.c */; };
+		D7634F8D1FCF62EE00A1A478 /* vector_utils.h in Headers */ = {isa = PBXBuildFile; fileRef = D7634F6C1FCF62EE00A1A478 /* vector_utils.h */; };
+		D7634F8E1FCF62EE00A1A478 /* bits.h in Headers */ = {isa = PBXBuildFile; fileRef = D7634F6D1FCF62EE00A1A478 /* bits.h */; };
+		D7634F8F1FCF62EE00A1A478 /* ff.c in Sources */ = {isa = PBXBuildFile; fileRef = D7634F6E1FCF62EE00A1A478 /* ff.c */; };
+		D7634F901FCF62EE00A1A478 /* ff.h in Headers */ = {isa = PBXBuildFile; fileRef = D7634F6F1FCF62EE00A1A478 /* ff.h */; };
+		D7634F911FCF62EE00A1A478 /* keccak.c in Sources */ = {isa = PBXBuildFile; fileRef = D7634F701FCF62EE00A1A478 /* keccak.c */; };
+		D7634F921FCF62EE00A1A478 /* keccak.h in Headers */ = {isa = PBXBuildFile; fileRef = D7634F711FCF62EE00A1A478 /* keccak.h */; };
+		D7634F931FCF62EE00A1A478 /* kem.c in Sources */ = {isa = PBXBuildFile; fileRef = D7634F721FCF62EE00A1A478 /* kem.c */; };
+		D7634F941FCF62EE00A1A478 /* m4r.c in Sources */ = {isa = PBXBuildFile; fileRef = D7634F731FCF62EE00A1A478 /* m4r.c */; };
+		D7634F951FCF62EE00A1A478 /* m4r.h in Headers */ = {isa = PBXBuildFile; fileRef = D7634F741FCF62EE00A1A478 /* m4r.h */; };
+		D7634F961FCF62EE00A1A478 /* matrix_ff2.c in Sources */ = {isa = PBXBuildFile; fileRef = D7634F751FCF62EE00A1A478 /* matrix_ff2.c */; };
+		D7634F971FCF62EE00A1A478 /* matrix_ff2.h in Headers */ = {isa = PBXBuildFile; fileRef = D7634F761FCF62EE00A1A478 /* matrix_ff2.h */; };
+		D7634F981FCF62EE00A1A478 /* PQCgenKAT_kem.c in Sources */ = {isa = PBXBuildFile; fileRef = D7634F781FCF62EE00A1A478 /* PQCgenKAT_kem.c */; };
+		D7634F991FCF62EE00A1A478 /* aes_drbg.c in Sources */ = {isa = PBXBuildFile; fileRef = D7634F791FCF62EE00A1A478 /* aes_drbg.c */; };
+		D7634F9A1FCF62EE00A1A478 /* aes_drbg.h in Headers */ = {isa = PBXBuildFile; fileRef = D7634F7A1FCF62EE00A1A478 /* aes_drbg.h */; };
+		D7634F9B1FCF62EE00A1A478 /* nts_kem_errors.h in Headers */ = {isa = PBXBuildFile; fileRef = D7634F7B1FCF62EE00A1A478 /* nts_kem_errors.h */; };
+		D7634F9C1FCF62EE00A1A478 /* nts_kem_params.h in Headers */ = {isa = PBXBuildFile; fileRef = D7634F7C1FCF62EE00A1A478 /* nts_kem_params.h */; };
+		D7634F9D1FCF62EE00A1A478 /* nts_kem.c in Sources */ = {isa = PBXBuildFile; fileRef = D7634F7D1FCF62EE00A1A478 /* nts_kem.c */; };
+		D7634F9E1FCF62EE00A1A478 /* nts_kem.h in Headers */ = {isa = PBXBuildFile; fileRef = D7634F7E1FCF62EE00A1A478 /* nts_kem.h */; };
+		D7634F9F1FCF62EE00A1A478 /* polynomial.c in Sources */ = {isa = PBXBuildFile; fileRef = D7634F7F1FCF62EE00A1A478 /* polynomial.c */; };
+		D7634FA01FCF62EE00A1A478 /* polynomial.h in Headers */ = {isa = PBXBuildFile; fileRef = D7634F801FCF62EE00A1A478 /* polynomial.h */; };
+		D7634FA11FCF62EE00A1A478 /* random.c in Sources */ = {isa = PBXBuildFile; fileRef = D7634F811FCF62EE00A1A478 /* random.c */; };
+		D7634FA21FCF62EE00A1A478 /* random.h in Headers */ = {isa = PBXBuildFile; fileRef = D7634F821FCF62EE00A1A478 /* random.h */; };
+		D7634FB31FCF632600A1A478 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = D7634FB01FCF632600A1A478 /* main.c */; };
+		D7634FB41FCF632600A1A478 /* ntskem_test.c in Sources */ = {isa = PBXBuildFile; fileRef = D7634FB11FCF632600A1A478 /* ntskem_test.c */; };
+		D7634FB71FCF63CA00A1A478 /* libntskem-13-80-64.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D7634F5B1FCF61E200A1A478 /* libntskem-13-80-64.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D7634FB51FCF63C700A1A478 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D7634F531FCF61E200A1A478 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D7634F5A1FCF61E200A1A478;
+			remoteInfo = "ntskem-13-80-64";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		D7634FA71FCF630900A1A478 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		D7634F5B1FCF61E200A1A478 /* libntskem-13-80-64.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libntskem-13-80-64.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7634F631FCF62EE00A1A478 /* api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = api.h; path = ../../../submission/Optimized_Implementation/kem/nts_kem_13_80/api.h; sourceTree = "<group>"; };
+		D7634F651FCF62EE00A1A478 /* bitslice_bma_64.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bitslice_bma_64.c; sourceTree = "<group>"; };
+		D7634F661FCF62EE00A1A478 /* bitslice_bma_64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bitslice_bma_64.h; sourceTree = "<group>"; };
+		D7634F671FCF62EE00A1A478 /* bitslice_fft_64.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bitslice_fft_64.c; sourceTree = "<group>"; };
+		D7634F681FCF62EE00A1A478 /* bitslice_fft_64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bitslice_fft_64.h; sourceTree = "<group>"; };
+		D7634F691FCF62EE00A1A478 /* twiddles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = twiddles.h; sourceTree = "<group>"; };
+		D7634F6A1FCF62EE00A1A478 /* twist_factors_13.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = twist_factors_13.h; sourceTree = "<group>"; };
+		D7634F6B1FCF62EE00A1A478 /* vector_utils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vector_utils.c; sourceTree = "<group>"; };
+		D7634F6C1FCF62EE00A1A478 /* vector_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vector_utils.h; sourceTree = "<group>"; };
+		D7634F6D1FCF62EE00A1A478 /* bits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bits.h; path = ../../../submission/Optimized_Implementation/kem/nts_kem_13_80/bits.h; sourceTree = "<group>"; };
+		D7634F6E1FCF62EE00A1A478 /* ff.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ff.c; path = ../../../submission/Optimized_Implementation/kem/nts_kem_13_80/ff.c; sourceTree = "<group>"; };
+		D7634F6F1FCF62EE00A1A478 /* ff.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ff.h; path = ../../../submission/Optimized_Implementation/kem/nts_kem_13_80/ff.h; sourceTree = "<group>"; };
+		D7634F701FCF62EE00A1A478 /* keccak.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = keccak.c; path = ../../../submission/Optimized_Implementation/kem/nts_kem_13_80/keccak.c; sourceTree = "<group>"; };
+		D7634F711FCF62EE00A1A478 /* keccak.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = keccak.h; path = ../../../submission/Optimized_Implementation/kem/nts_kem_13_80/keccak.h; sourceTree = "<group>"; };
+		D7634F721FCF62EE00A1A478 /* kem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = kem.c; path = ../../../submission/Optimized_Implementation/kem/nts_kem_13_80/kem.c; sourceTree = "<group>"; };
+		D7634F731FCF62EE00A1A478 /* m4r.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = m4r.c; path = ../../../submission/Optimized_Implementation/kem/nts_kem_13_80/m4r.c; sourceTree = "<group>"; };
+		D7634F741FCF62EE00A1A478 /* m4r.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = m4r.h; path = ../../../submission/Optimized_Implementation/kem/nts_kem_13_80/m4r.h; sourceTree = "<group>"; };
+		D7634F751FCF62EE00A1A478 /* matrix_ff2.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = matrix_ff2.c; path = ../../../submission/Optimized_Implementation/kem/nts_kem_13_80/matrix_ff2.c; sourceTree = "<group>"; };
+		D7634F761FCF62EE00A1A478 /* matrix_ff2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = matrix_ff2.h; path = ../../../submission/Optimized_Implementation/kem/nts_kem_13_80/matrix_ff2.h; sourceTree = "<group>"; };
+		D7634F781FCF62EE00A1A478 /* PQCgenKAT_kem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PQCgenKAT_kem.c; sourceTree = "<group>"; };
+		D7634F791FCF62EE00A1A478 /* aes_drbg.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = aes_drbg.c; sourceTree = "<group>"; };
+		D7634F7A1FCF62EE00A1A478 /* aes_drbg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aes_drbg.h; sourceTree = "<group>"; };
+		D7634F7B1FCF62EE00A1A478 /* nts_kem_errors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = nts_kem_errors.h; path = ../../../submission/Optimized_Implementation/kem/nts_kem_13_80/nts_kem_errors.h; sourceTree = "<group>"; };
+		D7634F7C1FCF62EE00A1A478 /* nts_kem_params.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = nts_kem_params.h; path = ../../../submission/Optimized_Implementation/kem/nts_kem_13_80/nts_kem_params.h; sourceTree = "<group>"; };
+		D7634F7D1FCF62EE00A1A478 /* nts_kem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = nts_kem.c; path = ../../../submission/Optimized_Implementation/kem/nts_kem_13_80/nts_kem.c; sourceTree = "<group>"; };
+		D7634F7E1FCF62EE00A1A478 /* nts_kem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = nts_kem.h; path = ../../../submission/Optimized_Implementation/kem/nts_kem_13_80/nts_kem.h; sourceTree = "<group>"; };
+		D7634F7F1FCF62EE00A1A478 /* polynomial.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = polynomial.c; path = ../../../submission/Optimized_Implementation/kem/nts_kem_13_80/polynomial.c; sourceTree = "<group>"; };
+		D7634F801FCF62EE00A1A478 /* polynomial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = polynomial.h; path = ../../../submission/Optimized_Implementation/kem/nts_kem_13_80/polynomial.h; sourceTree = "<group>"; };
+		D7634F811FCF62EE00A1A478 /* random.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = random.c; path = ../../../submission/Optimized_Implementation/kem/nts_kem_13_80/random.c; sourceTree = "<group>"; };
+		D7634F821FCF62EE00A1A478 /* random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = random.h; path = ../../../submission/Optimized_Implementation/kem/nts_kem_13_80/random.h; sourceTree = "<group>"; };
+		D7634FA91FCF630900A1A478 /* ntskem-13-80-64-test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "ntskem-13-80-64-test"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7634FB01FCF632600A1A478 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = main.c; path = ../../../../submission/Optimized_Implementation/kem/nts_kem_13_80/test/main.c; sourceTree = "<group>"; };
+		D7634FB11FCF632600A1A478 /* ntskem_test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ntskem_test.c; path = ../../../../submission/Optimized_Implementation/kem/nts_kem_13_80/test/ntskem_test.c; sourceTree = "<group>"; };
+		D7634FB21FCF632600A1A478 /* ntskem_test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ntskem_test.h; path = ../../../../submission/Optimized_Implementation/kem/nts_kem_13_80/test/ntskem_test.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D7634F581FCF61E200A1A478 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D7634FA61FCF630900A1A478 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D7634FB71FCF63CA00A1A478 /* libntskem-13-80-64.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D7634F521FCF61E200A1A478 = {
+			isa = PBXGroup;
+			children = (
+				D7634F621FCF629200A1A478 /* src */,
+				D7634FAA1FCF630900A1A478 /* ntskem-13-80-64-test */,
+				D7634F5C1FCF61E200A1A478 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D7634F5C1FCF61E200A1A478 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D7634F5B1FCF61E200A1A478 /* libntskem-13-80-64.a */,
+				D7634FA91FCF630900A1A478 /* ntskem-13-80-64-test */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D7634F621FCF629200A1A478 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				D7634F641FCF62EE00A1A478 /* bit-slice */,
+				D7634F771FCF62EE00A1A478 /* nist */,
+				D7634F631FCF62EE00A1A478 /* api.h */,
+				D7634F6D1FCF62EE00A1A478 /* bits.h */,
+				D7634F6E1FCF62EE00A1A478 /* ff.c */,
+				D7634F6F1FCF62EE00A1A478 /* ff.h */,
+				D7634F701FCF62EE00A1A478 /* keccak.c */,
+				D7634F711FCF62EE00A1A478 /* keccak.h */,
+				D7634F721FCF62EE00A1A478 /* kem.c */,
+				D7634F731FCF62EE00A1A478 /* m4r.c */,
+				D7634F741FCF62EE00A1A478 /* m4r.h */,
+				D7634F751FCF62EE00A1A478 /* matrix_ff2.c */,
+				D7634F761FCF62EE00A1A478 /* matrix_ff2.h */,
+				D7634F7B1FCF62EE00A1A478 /* nts_kem_errors.h */,
+				D7634F7C1FCF62EE00A1A478 /* nts_kem_params.h */,
+				D7634F7D1FCF62EE00A1A478 /* nts_kem.c */,
+				D7634F7E1FCF62EE00A1A478 /* nts_kem.h */,
+				D7634F7F1FCF62EE00A1A478 /* polynomial.c */,
+				D7634F801FCF62EE00A1A478 /* polynomial.h */,
+				D7634F811FCF62EE00A1A478 /* random.c */,
+				D7634F821FCF62EE00A1A478 /* random.h */,
+			);
+			name = src;
+			sourceTree = "<group>";
+		};
+		D7634F641FCF62EE00A1A478 /* bit-slice */ = {
+			isa = PBXGroup;
+			children = (
+				D7634F651FCF62EE00A1A478 /* bitslice_bma_64.c */,
+				D7634F661FCF62EE00A1A478 /* bitslice_bma_64.h */,
+				D7634F671FCF62EE00A1A478 /* bitslice_fft_64.c */,
+				D7634F681FCF62EE00A1A478 /* bitslice_fft_64.h */,
+				D7634F691FCF62EE00A1A478 /* twiddles.h */,
+				D7634F6A1FCF62EE00A1A478 /* twist_factors_13.h */,
+				D7634F6B1FCF62EE00A1A478 /* vector_utils.c */,
+				D7634F6C1FCF62EE00A1A478 /* vector_utils.h */,
+			);
+			name = "bit-slice";
+			path = "../../../submission/Optimized_Implementation/kem/nts_kem_13_80/bit-slice";
+			sourceTree = "<group>";
+		};
+		D7634F771FCF62EE00A1A478 /* nist */ = {
+			isa = PBXGroup;
+			children = (
+				D7634F781FCF62EE00A1A478 /* PQCgenKAT_kem.c */,
+				D7634F791FCF62EE00A1A478 /* aes_drbg.c */,
+				D7634F7A1FCF62EE00A1A478 /* aes_drbg.h */,
+			);
+			name = nist;
+			path = ../../../submission/Optimized_Implementation/kem/nts_kem_13_80/nist;
+			sourceTree = "<group>";
+		};
+		D7634FAA1FCF630900A1A478 /* ntskem-13-80-64-test */ = {
+			isa = PBXGroup;
+			children = (
+				D7634FB01FCF632600A1A478 /* main.c */,
+				D7634FB11FCF632600A1A478 /* ntskem_test.c */,
+				D7634FB21FCF632600A1A478 /* ntskem_test.h */,
+			);
+			path = "ntskem-13-80-64-test";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		D7634F591FCF61E200A1A478 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D7634F9B1FCF62EE00A1A478 /* nts_kem_errors.h in Headers */,
+				D7634F8E1FCF62EE00A1A478 /* bits.h in Headers */,
+				D7634F8A1FCF62EE00A1A478 /* twiddles.h in Headers */,
+				D7634F921FCF62EE00A1A478 /* keccak.h in Headers */,
+				D7634F9A1FCF62EE00A1A478 /* aes_drbg.h in Headers */,
+				D7634FA21FCF62EE00A1A478 /* random.h in Headers */,
+				D7634F8B1FCF62EE00A1A478 /* twist_factors_13.h in Headers */,
+				D7634FA01FCF62EE00A1A478 /* polynomial.h in Headers */,
+				D7634F9C1FCF62EE00A1A478 /* nts_kem_params.h in Headers */,
+				D7634F971FCF62EE00A1A478 /* matrix_ff2.h in Headers */,
+				D7634F891FCF62EE00A1A478 /* bitslice_fft_64.h in Headers */,
+				D7634F9E1FCF62EE00A1A478 /* nts_kem.h in Headers */,
+				D7634F871FCF62EE00A1A478 /* bitslice_bma_64.h in Headers */,
+				D7634F951FCF62EE00A1A478 /* m4r.h in Headers */,
+				D7634F851FCF62EE00A1A478 /* api.h in Headers */,
+				D7634F901FCF62EE00A1A478 /* ff.h in Headers */,
+				D7634F8D1FCF62EE00A1A478 /* vector_utils.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		D7634F5A1FCF61E200A1A478 /* ntskem-13-80-64 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D7634F5F1FCF61E200A1A478 /* Build configuration list for PBXNativeTarget "ntskem-13-80-64" */;
+			buildPhases = (
+				D7634F571FCF61E200A1A478 /* Sources */,
+				D7634F581FCF61E200A1A478 /* Frameworks */,
+				D7634F591FCF61E200A1A478 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "ntskem-13-80-64";
+			productName = "ntskem-13-80-64";
+			productReference = D7634F5B1FCF61E200A1A478 /* libntskem-13-80-64.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		D7634FA81FCF630900A1A478 /* ntskem-13-80-64-test */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D7634FAD1FCF630A00A1A478 /* Build configuration list for PBXNativeTarget "ntskem-13-80-64-test" */;
+			buildPhases = (
+				D7634FA51FCF630900A1A478 /* Sources */,
+				D7634FA61FCF630900A1A478 /* Frameworks */,
+				D7634FA71FCF630900A1A478 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D7634FB61FCF63C700A1A478 /* PBXTargetDependency */,
+			);
+			name = "ntskem-13-80-64-test";
+			productName = "ntskem-13-80-64-test";
+			productReference = D7634FA91FCF630900A1A478 /* ntskem-13-80-64-test */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D7634F531FCF61E200A1A478 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0820;
+				ORGANIZATIONNAME = "Post-Quantum";
+				TargetAttributes = {
+					D7634F5A1FCF61E200A1A478 = {
+						CreatedOnToolsVersion = 8.2.1;
+						ProvisioningStyle = Automatic;
+					};
+					D7634FA81FCF630900A1A478 = {
+						CreatedOnToolsVersion = 8.2.1;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = D7634F561FCF61E200A1A478 /* Build configuration list for PBXProject "ntskem-13-80-64" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = D7634F521FCF61E200A1A478;
+			productRefGroup = D7634F5C1FCF61E200A1A478 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D7634F5A1FCF61E200A1A478 /* ntskem-13-80-64 */,
+				D7634FA81FCF630900A1A478 /* ntskem-13-80-64-test */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D7634F571FCF61E200A1A478 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D7634F861FCF62EE00A1A478 /* bitslice_bma_64.c in Sources */,
+				D7634F8F1FCF62EE00A1A478 /* ff.c in Sources */,
+				D7634F8C1FCF62EE00A1A478 /* vector_utils.c in Sources */,
+				D7634F981FCF62EE00A1A478 /* PQCgenKAT_kem.c in Sources */,
+				D7634F9D1FCF62EE00A1A478 /* nts_kem.c in Sources */,
+				D7634F931FCF62EE00A1A478 /* kem.c in Sources */,
+				D7634F941FCF62EE00A1A478 /* m4r.c in Sources */,
+				D7634F911FCF62EE00A1A478 /* keccak.c in Sources */,
+				D7634F881FCF62EE00A1A478 /* bitslice_fft_64.c in Sources */,
+				D7634F9F1FCF62EE00A1A478 /* polynomial.c in Sources */,
+				D7634FA11FCF62EE00A1A478 /* random.c in Sources */,
+				D7634F991FCF62EE00A1A478 /* aes_drbg.c in Sources */,
+				D7634F961FCF62EE00A1A478 /* matrix_ff2.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D7634FA51FCF630900A1A478 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D7634FB31FCF632600A1A478 /* main.c in Sources */,
+				D7634FB41FCF632600A1A478 /* ntskem_test.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D7634FB61FCF63C700A1A478 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D7634F5A1FCF61E200A1A478 /* ntskem-13-80-64 */;
+			targetProxy = D7634FB51FCF63C700A1A478 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		D7634F5D1FCF61E200A1A478 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		D7634F5E1FCF61E200A1A478 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		D7634F601FCF61E200A1A478 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = lib;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/opt/openssl/include,
+					/usr/local/include,
+				);
+				OTHER_CFLAGS = (
+					"-DNIST_DRBG_AES",
+					"-DBENCHMARK",
+					"-ansi",
+					"-std=c99",
+					"-Wall",
+					"-Wpedantic",
+					"-fomit-frame-pointer",
+					"-fwrapv",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		D7634F611FCF61E200A1A478 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = lib;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/opt/openssl/include,
+					/usr/local/include,
+				);
+				OTHER_CFLAGS = (
+					"-DNIST_DRBG_AES",
+					"-DBENCHMARK",
+					"-ansi",
+					"-std=c99",
+					"-Wall",
+					"-Wpedantic",
+					"-fomit-frame-pointer",
+					"-fwrapv",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		D7634FAE1FCF630A00A1A478 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/opt/openssl/lib,
+					/usr/local/lib,
+				);
+				OTHER_CFLAGS = (
+					"-DNTSKEM_M=13",
+					"-DNTSKEM_T=80",
+				);
+				OTHER_LDFLAGS = "-lcrypto";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		D7634FAF1FCF630A00A1A478 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/opt/openssl/lib,
+					/usr/local/lib,
+				);
+				OTHER_CFLAGS = (
+					"-DNTSKEM_M=13",
+					"-DNTSKEM_T=80",
+				);
+				OTHER_LDFLAGS = "-lcrypto";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D7634F561FCF61E200A1A478 /* Build configuration list for PBXProject "ntskem-13-80-64" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D7634F5D1FCF61E200A1A478 /* Debug */,
+				D7634F5E1FCF61E200A1A478 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D7634F5F1FCF61E200A1A478 /* Build configuration list for PBXNativeTarget "ntskem-13-80-64" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D7634F601FCF61E200A1A478 /* Debug */,
+				D7634F611FCF61E200A1A478 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D7634FAD1FCF630A00A1A478 /* Build configuration list for PBXNativeTarget "ntskem-13-80-64-test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D7634FAE1FCF630A00A1A478 /* Debug */,
+				D7634FAF1FCF630A00A1A478 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D7634F531FCF61E200A1A478 /* Project object */;
+}

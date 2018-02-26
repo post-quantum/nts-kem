@@ -1,0 +1,526 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D760005D1FCB1FB10068B6E1 /* additive_fft.c in Sources */ = {isa = PBXBuildFile; fileRef = D76000401FCB1FB10068B6E1 /* additive_fft.c */; };
+		D760005E1FCB1FB10068B6E1 /* additive_fft.h in Headers */ = {isa = PBXBuildFile; fileRef = D76000411FCB1FB10068B6E1 /* additive_fft.h */; };
+		D760005F1FCB1FB10068B6E1 /* api.h in Headers */ = {isa = PBXBuildFile; fileRef = D76000421FCB1FB10068B6E1 /* api.h */; };
+		D76000601FCB1FB10068B6E1 /* berlekamp_massey.c in Sources */ = {isa = PBXBuildFile; fileRef = D76000431FCB1FB10068B6E1 /* berlekamp_massey.c */; };
+		D76000611FCB1FB10068B6E1 /* berlekamp_massey.h in Headers */ = {isa = PBXBuildFile; fileRef = D76000441FCB1FB10068B6E1 /* berlekamp_massey.h */; };
+		D76000621FCB1FB10068B6E1 /* bits.h in Headers */ = {isa = PBXBuildFile; fileRef = D76000451FCB1FB10068B6E1 /* bits.h */; };
+		D76000631FCB1FB10068B6E1 /* ff.c in Sources */ = {isa = PBXBuildFile; fileRef = D76000461FCB1FB10068B6E1 /* ff.c */; };
+		D76000641FCB1FB10068B6E1 /* ff.h in Headers */ = {isa = PBXBuildFile; fileRef = D76000471FCB1FB10068B6E1 /* ff.h */; };
+		D76000651FCB1FB10068B6E1 /* keccak.c in Sources */ = {isa = PBXBuildFile; fileRef = D76000481FCB1FB10068B6E1 /* keccak.c */; };
+		D76000661FCB1FB10068B6E1 /* keccak.h in Headers */ = {isa = PBXBuildFile; fileRef = D76000491FCB1FB10068B6E1 /* keccak.h */; };
+		D76000671FCB1FB10068B6E1 /* kem.c in Sources */ = {isa = PBXBuildFile; fileRef = D760004A1FCB1FB10068B6E1 /* kem.c */; };
+		D76000681FCB1FB10068B6E1 /* m4r.c in Sources */ = {isa = PBXBuildFile; fileRef = D760004B1FCB1FB10068B6E1 /* m4r.c */; };
+		D76000691FCB1FB10068B6E1 /* m4r.h in Headers */ = {isa = PBXBuildFile; fileRef = D760004C1FCB1FB10068B6E1 /* m4r.h */; };
+		D760006A1FCB1FB10068B6E1 /* matrix_ff2.c in Sources */ = {isa = PBXBuildFile; fileRef = D760004D1FCB1FB10068B6E1 /* matrix_ff2.c */; };
+		D760006B1FCB1FB10068B6E1 /* matrix_ff2.h in Headers */ = {isa = PBXBuildFile; fileRef = D760004E1FCB1FB10068B6E1 /* matrix_ff2.h */; };
+		D760006D1FCB1FB10068B6E1 /* aes_drbg.c in Sources */ = {isa = PBXBuildFile; fileRef = D76000511FCB1FB10068B6E1 /* aes_drbg.c */; };
+		D760006E1FCB1FB10068B6E1 /* aes_drbg.h in Headers */ = {isa = PBXBuildFile; fileRef = D76000521FCB1FB10068B6E1 /* aes_drbg.h */; };
+		D760006F1FCB1FB10068B6E1 /* nts_kem_errors.h in Headers */ = {isa = PBXBuildFile; fileRef = D76000531FCB1FB10068B6E1 /* nts_kem_errors.h */; };
+		D76000701FCB1FB10068B6E1 /* nts_kem_params.h in Headers */ = {isa = PBXBuildFile; fileRef = D76000541FCB1FB10068B6E1 /* nts_kem_params.h */; };
+		D76000711FCB1FB10068B6E1 /* nts_kem.c in Sources */ = {isa = PBXBuildFile; fileRef = D76000551FCB1FB10068B6E1 /* nts_kem.c */; };
+		D76000721FCB1FB10068B6E1 /* nts_kem.h in Headers */ = {isa = PBXBuildFile; fileRef = D76000561FCB1FB10068B6E1 /* nts_kem.h */; };
+		D76000731FCB1FB10068B6E1 /* polynomial.c in Sources */ = {isa = PBXBuildFile; fileRef = D76000571FCB1FB10068B6E1 /* polynomial.c */; };
+		D76000741FCB1FB10068B6E1 /* polynomial.h in Headers */ = {isa = PBXBuildFile; fileRef = D76000581FCB1FB10068B6E1 /* polynomial.h */; };
+		D76000751FCB1FB10068B6E1 /* random.c in Sources */ = {isa = PBXBuildFile; fileRef = D76000591FCB1FB10068B6E1 /* random.c */; };
+		D76000761FCB1FB10068B6E1 /* random.h in Headers */ = {isa = PBXBuildFile; fileRef = D760005A1FCB1FB10068B6E1 /* random.h */; };
+		D76000771FCB1FB10068B6E1 /* stack.c in Sources */ = {isa = PBXBuildFile; fileRef = D760005B1FCB1FB10068B6E1 /* stack.c */; };
+		D76000781FCB1FB10068B6E1 /* stack.h in Headers */ = {isa = PBXBuildFile; fileRef = D760005C1FCB1FB10068B6E1 /* stack.h */; };
+		D76000871FCB203D0068B6E1 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = D76000841FCB203D0068B6E1 /* main.c */; };
+		D76000881FCB203D0068B6E1 /* ntskem_test.c in Sources */ = {isa = PBXBuildFile; fileRef = D76000851FCB203D0068B6E1 /* ntskem_test.c */; };
+		D760008B1FCB206B0068B6E1 /* libntskem-13-136.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D76000381FCB1F960068B6E1 /* libntskem-13-136.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D76000891FCB20680068B6E1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D76000301FCB1F960068B6E1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D76000371FCB1F960068B6E1;
+			remoteInfo = "ntskem-13-136";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		D760007B1FCB1FFB0068B6E1 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		D76000381FCB1F960068B6E1 /* libntskem-13-136.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libntskem-13-136.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D76000401FCB1FB10068B6E1 /* additive_fft.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = additive_fft.c; path = ../../../submission/Reference_Implementation/kem/nts_kem_13_136/additive_fft.c; sourceTree = "<group>"; };
+		D76000411FCB1FB10068B6E1 /* additive_fft.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = additive_fft.h; path = ../../../submission/Reference_Implementation/kem/nts_kem_13_136/additive_fft.h; sourceTree = "<group>"; };
+		D76000421FCB1FB10068B6E1 /* api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = api.h; path = ../../../submission/Reference_Implementation/kem/nts_kem_13_136/api.h; sourceTree = "<group>"; };
+		D76000431FCB1FB10068B6E1 /* berlekamp_massey.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = berlekamp_massey.c; path = ../../../submission/Reference_Implementation/kem/nts_kem_13_136/berlekamp_massey.c; sourceTree = "<group>"; };
+		D76000441FCB1FB10068B6E1 /* berlekamp_massey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = berlekamp_massey.h; path = ../../../submission/Reference_Implementation/kem/nts_kem_13_136/berlekamp_massey.h; sourceTree = "<group>"; };
+		D76000451FCB1FB10068B6E1 /* bits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bits.h; path = ../../../submission/Reference_Implementation/kem/nts_kem_13_136/bits.h; sourceTree = "<group>"; };
+		D76000461FCB1FB10068B6E1 /* ff.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ff.c; path = ../../../submission/Reference_Implementation/kem/nts_kem_13_136/ff.c; sourceTree = "<group>"; };
+		D76000471FCB1FB10068B6E1 /* ff.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ff.h; path = ../../../submission/Reference_Implementation/kem/nts_kem_13_136/ff.h; sourceTree = "<group>"; };
+		D76000481FCB1FB10068B6E1 /* keccak.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = keccak.c; path = ../../../submission/Reference_Implementation/kem/nts_kem_13_136/keccak.c; sourceTree = "<group>"; };
+		D76000491FCB1FB10068B6E1 /* keccak.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = keccak.h; path = ../../../submission/Reference_Implementation/kem/nts_kem_13_136/keccak.h; sourceTree = "<group>"; };
+		D760004A1FCB1FB10068B6E1 /* kem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = kem.c; path = ../../../submission/Reference_Implementation/kem/nts_kem_13_136/kem.c; sourceTree = "<group>"; };
+		D760004B1FCB1FB10068B6E1 /* m4r.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = m4r.c; path = ../../../submission/Reference_Implementation/kem/nts_kem_13_136/m4r.c; sourceTree = "<group>"; };
+		D760004C1FCB1FB10068B6E1 /* m4r.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = m4r.h; path = ../../../submission/Reference_Implementation/kem/nts_kem_13_136/m4r.h; sourceTree = "<group>"; };
+		D760004D1FCB1FB10068B6E1 /* matrix_ff2.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = matrix_ff2.c; path = ../../../submission/Reference_Implementation/kem/nts_kem_13_136/matrix_ff2.c; sourceTree = "<group>"; };
+		D760004E1FCB1FB10068B6E1 /* matrix_ff2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = matrix_ff2.h; path = ../../../submission/Reference_Implementation/kem/nts_kem_13_136/matrix_ff2.h; sourceTree = "<group>"; };
+		D76000511FCB1FB10068B6E1 /* aes_drbg.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = aes_drbg.c; sourceTree = "<group>"; };
+		D76000521FCB1FB10068B6E1 /* aes_drbg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aes_drbg.h; sourceTree = "<group>"; };
+		D76000531FCB1FB10068B6E1 /* nts_kem_errors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = nts_kem_errors.h; path = ../../../submission/Reference_Implementation/kem/nts_kem_13_136/nts_kem_errors.h; sourceTree = "<group>"; };
+		D76000541FCB1FB10068B6E1 /* nts_kem_params.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = nts_kem_params.h; path = ../../../submission/Reference_Implementation/kem/nts_kem_13_136/nts_kem_params.h; sourceTree = "<group>"; };
+		D76000551FCB1FB10068B6E1 /* nts_kem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = nts_kem.c; path = ../../../submission/Reference_Implementation/kem/nts_kem_13_136/nts_kem.c; sourceTree = "<group>"; };
+		D76000561FCB1FB10068B6E1 /* nts_kem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = nts_kem.h; path = ../../../submission/Reference_Implementation/kem/nts_kem_13_136/nts_kem.h; sourceTree = "<group>"; };
+		D76000571FCB1FB10068B6E1 /* polynomial.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = polynomial.c; path = ../../../submission/Reference_Implementation/kem/nts_kem_13_136/polynomial.c; sourceTree = "<group>"; };
+		D76000581FCB1FB10068B6E1 /* polynomial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = polynomial.h; path = ../../../submission/Reference_Implementation/kem/nts_kem_13_136/polynomial.h; sourceTree = "<group>"; };
+		D76000591FCB1FB10068B6E1 /* random.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = random.c; path = ../../../submission/Reference_Implementation/kem/nts_kem_13_136/random.c; sourceTree = "<group>"; };
+		D760005A1FCB1FB10068B6E1 /* random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = random.h; path = ../../../submission/Reference_Implementation/kem/nts_kem_13_136/random.h; sourceTree = "<group>"; };
+		D760005B1FCB1FB10068B6E1 /* stack.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = stack.c; path = ../../../submission/Reference_Implementation/kem/nts_kem_13_136/stack.c; sourceTree = "<group>"; };
+		D760005C1FCB1FB10068B6E1 /* stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stack.h; path = ../../../submission/Reference_Implementation/kem/nts_kem_13_136/stack.h; sourceTree = "<group>"; };
+		D760007D1FCB1FFB0068B6E1 /* ntskem-13-136-test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "ntskem-13-136-test"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D76000841FCB203D0068B6E1 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		D76000851FCB203D0068B6E1 /* ntskem_test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ntskem_test.c; sourceTree = "<group>"; };
+		D76000861FCB203D0068B6E1 /* ntskem_test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ntskem_test.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D76000351FCB1F960068B6E1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D760007A1FCB1FFB0068B6E1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D760008B1FCB206B0068B6E1 /* libntskem-13-136.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D760002F1FCB1F960068B6E1 = {
+			isa = PBXGroup;
+			children = (
+				D760003F1FCB1F9A0068B6E1 /* src */,
+				D760007E1FCB1FFB0068B6E1 /* ntskem-13-136-test */,
+				D76000391FCB1F960068B6E1 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D76000391FCB1F960068B6E1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D76000381FCB1F960068B6E1 /* libntskem-13-136.a */,
+				D760007D1FCB1FFB0068B6E1 /* ntskem-13-136-test */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D760003F1FCB1F9A0068B6E1 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				D760004F1FCB1FB10068B6E1 /* nist */,
+				D76000401FCB1FB10068B6E1 /* additive_fft.c */,
+				D76000411FCB1FB10068B6E1 /* additive_fft.h */,
+				D76000421FCB1FB10068B6E1 /* api.h */,
+				D76000431FCB1FB10068B6E1 /* berlekamp_massey.c */,
+				D76000441FCB1FB10068B6E1 /* berlekamp_massey.h */,
+				D76000451FCB1FB10068B6E1 /* bits.h */,
+				D76000461FCB1FB10068B6E1 /* ff.c */,
+				D76000471FCB1FB10068B6E1 /* ff.h */,
+				D76000481FCB1FB10068B6E1 /* keccak.c */,
+				D76000491FCB1FB10068B6E1 /* keccak.h */,
+				D760004A1FCB1FB10068B6E1 /* kem.c */,
+				D760004B1FCB1FB10068B6E1 /* m4r.c */,
+				D760004C1FCB1FB10068B6E1 /* m4r.h */,
+				D760004D1FCB1FB10068B6E1 /* matrix_ff2.c */,
+				D760004E1FCB1FB10068B6E1 /* matrix_ff2.h */,
+				D76000531FCB1FB10068B6E1 /* nts_kem_errors.h */,
+				D76000541FCB1FB10068B6E1 /* nts_kem_params.h */,
+				D76000551FCB1FB10068B6E1 /* nts_kem.c */,
+				D76000561FCB1FB10068B6E1 /* nts_kem.h */,
+				D76000571FCB1FB10068B6E1 /* polynomial.c */,
+				D76000581FCB1FB10068B6E1 /* polynomial.h */,
+				D76000591FCB1FB10068B6E1 /* random.c */,
+				D760005A1FCB1FB10068B6E1 /* random.h */,
+				D760005B1FCB1FB10068B6E1 /* stack.c */,
+				D760005C1FCB1FB10068B6E1 /* stack.h */,
+			);
+			name = src;
+			sourceTree = "<group>";
+		};
+		D760004F1FCB1FB10068B6E1 /* nist */ = {
+			isa = PBXGroup;
+			children = (
+				D76000511FCB1FB10068B6E1 /* aes_drbg.c */,
+				D76000521FCB1FB10068B6E1 /* aes_drbg.h */,
+			);
+			name = nist;
+			path = ../../../submission/Reference_Implementation/kem/nts_kem_13_136/nist;
+			sourceTree = "<group>";
+		};
+		D760007E1FCB1FFB0068B6E1 /* ntskem-13-136-test */ = {
+			isa = PBXGroup;
+			children = (
+				D76000841FCB203D0068B6E1 /* main.c */,
+				D76000851FCB203D0068B6E1 /* ntskem_test.c */,
+				D76000861FCB203D0068B6E1 /* ntskem_test.h */,
+			);
+			name = "ntskem-13-136-test";
+			path = ../../../submission/Reference_Implementation/kem/nts_kem_13_136/test;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		D76000361FCB1F960068B6E1 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D76000781FCB1FB10068B6E1 /* stack.h in Headers */,
+				D76000721FCB1FB10068B6E1 /* nts_kem.h in Headers */,
+				D760006E1FCB1FB10068B6E1 /* aes_drbg.h in Headers */,
+				D76000641FCB1FB10068B6E1 /* ff.h in Headers */,
+				D76000691FCB1FB10068B6E1 /* m4r.h in Headers */,
+				D76000741FCB1FB10068B6E1 /* polynomial.h in Headers */,
+				D76000701FCB1FB10068B6E1 /* nts_kem_params.h in Headers */,
+				D760005E1FCB1FB10068B6E1 /* additive_fft.h in Headers */,
+				D76000761FCB1FB10068B6E1 /* random.h in Headers */,
+				D76000661FCB1FB10068B6E1 /* keccak.h in Headers */,
+				D760006F1FCB1FB10068B6E1 /* nts_kem_errors.h in Headers */,
+				D760006B1FCB1FB10068B6E1 /* matrix_ff2.h in Headers */,
+				D760005F1FCB1FB10068B6E1 /* api.h in Headers */,
+				D76000621FCB1FB10068B6E1 /* bits.h in Headers */,
+				D76000611FCB1FB10068B6E1 /* berlekamp_massey.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		D76000371FCB1F960068B6E1 /* ntskem-13-136 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D760003C1FCB1F960068B6E1 /* Build configuration list for PBXNativeTarget "ntskem-13-136" */;
+			buildPhases = (
+				D76000341FCB1F960068B6E1 /* Sources */,
+				D76000351FCB1F960068B6E1 /* Frameworks */,
+				D76000361FCB1F960068B6E1 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "ntskem-13-136";
+			productName = "ntskem-13-136";
+			productReference = D76000381FCB1F960068B6E1 /* libntskem-13-136.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		D760007C1FCB1FFB0068B6E1 /* ntskem-13-136-test */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D76000811FCB1FFB0068B6E1 /* Build configuration list for PBXNativeTarget "ntskem-13-136-test" */;
+			buildPhases = (
+				D76000791FCB1FFB0068B6E1 /* Sources */,
+				D760007A1FCB1FFB0068B6E1 /* Frameworks */,
+				D760007B1FCB1FFB0068B6E1 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D760008A1FCB20680068B6E1 /* PBXTargetDependency */,
+			);
+			name = "ntskem-13-136-test";
+			productName = "ntskem-13-136-test";
+			productReference = D760007D1FCB1FFB0068B6E1 /* ntskem-13-136-test */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D76000301FCB1F960068B6E1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0820;
+				ORGANIZATIONNAME = "Post-Quantum";
+				TargetAttributes = {
+					D76000371FCB1F960068B6E1 = {
+						CreatedOnToolsVersion = 8.2.1;
+						ProvisioningStyle = Automatic;
+					};
+					D760007C1FCB1FFB0068B6E1 = {
+						CreatedOnToolsVersion = 8.2.1;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = D76000331FCB1F960068B6E1 /* Build configuration list for PBXProject "ntskem-13-136" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = D760002F1FCB1F960068B6E1;
+			productRefGroup = D76000391FCB1F960068B6E1 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D76000371FCB1F960068B6E1 /* ntskem-13-136 */,
+				D760007C1FCB1FFB0068B6E1 /* ntskem-13-136-test */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D76000341FCB1F960068B6E1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D760005D1FCB1FB10068B6E1 /* additive_fft.c in Sources */,
+				D76000671FCB1FB10068B6E1 /* kem.c in Sources */,
+				D76000631FCB1FB10068B6E1 /* ff.c in Sources */,
+				D76000681FCB1FB10068B6E1 /* m4r.c in Sources */,
+				D76000771FCB1FB10068B6E1 /* stack.c in Sources */,
+				D760006D1FCB1FB10068B6E1 /* aes_drbg.c in Sources */,
+				D76000601FCB1FB10068B6E1 /* berlekamp_massey.c in Sources */,
+				D760006A1FCB1FB10068B6E1 /* matrix_ff2.c in Sources */,
+				D76000731FCB1FB10068B6E1 /* polynomial.c in Sources */,
+				D76000651FCB1FB10068B6E1 /* keccak.c in Sources */,
+				D76000751FCB1FB10068B6E1 /* random.c in Sources */,
+				D76000711FCB1FB10068B6E1 /* nts_kem.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D76000791FCB1FFB0068B6E1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D76000871FCB203D0068B6E1 /* main.c in Sources */,
+				D76000881FCB203D0068B6E1 /* ntskem_test.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D760008A1FCB20680068B6E1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D76000371FCB1F960068B6E1 /* ntskem-13-136 */;
+			targetProxy = D76000891FCB20680068B6E1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		D760003A1FCB1F960068B6E1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		D760003B1FCB1F960068B6E1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		D760003D1FCB1F960068B6E1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = lib;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/opt/openssl/include,
+					/usr/local/include,
+				);
+				OTHER_CFLAGS = (
+					"-DNIST_DRBG_AES",
+					"-march=native",
+					"-O3",
+					"-ansi",
+					"-std=c99",
+					"-Wpedantic",
+					"-Wall",
+					"-Werror",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		D760003E1FCB1F960068B6E1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = lib;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/opt/openssl/include,
+					/usr/local/include,
+				);
+				OTHER_CFLAGS = (
+					"-DNIST_DRBG_AES",
+					"-march=native",
+					"-O3",
+					"-ansi",
+					"-std=c99",
+					"-Wpedantic",
+					"-Wall",
+					"-Werror",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		D76000821FCB1FFB0068B6E1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/opt/openssl/lib,
+					/usr/local/lib,
+				);
+				OTHER_CFLAGS = (
+					"-DNTSKEM_M=13",
+					"-DNTSKEM_T=136",
+				);
+				OTHER_LDFLAGS = "-lcrypto";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		D76000831FCB1FFB0068B6E1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/opt/openssl/lib,
+					/usr/local/lib,
+				);
+				OTHER_CFLAGS = (
+					"-DNTSKEM_M=13",
+					"-DNTSKEM_T=136",
+				);
+				OTHER_LDFLAGS = "-lcrypto";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D76000331FCB1F960068B6E1 /* Build configuration list for PBXProject "ntskem-13-136" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D760003A1FCB1F960068B6E1 /* Debug */,
+				D760003B1FCB1F960068B6E1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D760003C1FCB1F960068B6E1 /* Build configuration list for PBXNativeTarget "ntskem-13-136" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D760003D1FCB1F960068B6E1 /* Debug */,
+				D760003E1FCB1F960068B6E1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D76000811FCB1FFB0068B6E1 /* Build configuration list for PBXNativeTarget "ntskem-13-136-test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D76000821FCB1FFB0068B6E1 /* Debug */,
+				D76000831FCB1FFB0068B6E1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D76000301FCB1F960068B6E1 /* Project object */;
+}
