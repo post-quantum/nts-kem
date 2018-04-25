@@ -379,6 +379,9 @@ int nts_kem_encapsulate(const uint8_t *pk,
         while (v) {
             l = (int32_t)lowest_bit_idx(v);
             v ^= (ONE << l);
+#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+            l = BITSIZE - ((l >> 3) << 3) - (8 - (l & 7));
+#endif
             l += (BITSIZE*i);
             for (j=0; j<NTS_KEM_PARAM_R_VEC; j++) {
                 c_c[j] ^= Q[l][j];
@@ -390,6 +393,9 @@ int nts_kem_encapsulate(const uint8_t *pk,
     while (v) {
         l = (int32_t)lowest_bit_idx(v);
         v ^= (ONE << l);
+#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+        l = BITSIZE - ((l >> 3) << 3) - (8 - (l & 7));
+#endif
         l += (BITSIZE*i);
         for (j=0; j<NTS_KEM_PARAM_R_VEC; j++) {
             c_c[j] ^= Q[l][j];
@@ -400,6 +406,9 @@ int nts_kem_encapsulate(const uint8_t *pk,
         while (v) {
             l = (int32_t)lowest_bit_idx(v);
             v ^= (ONE << l);
+#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+            l = BITSIZE - ((l >> 3) << 3) - (8 - (l & 7));
+#endif
             l += ((BITSIZE*i) + NTS_KEM_PARAM_A);
             for (j=0; j<NTS_KEM_PARAM_R_VEC; j++) {
                 c_c[j] ^= Q[l][j];
@@ -545,7 +554,11 @@ int nts_kem_decapsulate(const uint8_t *sk,
     }
     e_prime = (uint8_t *)error;
     /* Correct the error in the zero-th coordinate if necessary */
+#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+    e_prime[7] |= ((uint8_t)extended_error);
+#else
     e_prime[0] |= ((uint8_t)extended_error);
+#endif
     error_weight += extended_error;
 
     /**
@@ -906,11 +919,20 @@ void pack_buffer(const uint8_t *src, int src_len, uint8_t *dst)
     uint8_t *dst_ptr = dst;
     /* Every two units consume three bytes */
     for (i=0; i<src_len; i+=2) {
+#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+        *dst_ptr  = src_ptr[1]; dst_ptr++;
+        *dst_ptr  = src_ptr[0];
+        *dst_ptr |= ((src_ptr[3] & 0x0F) << 4); dst_ptr++;
+        *dst_ptr  = ((src_ptr[3] & 0xF0) >> 4);
+        *dst_ptr |= ((src_ptr[2] & 0x0F) << 4); dst_ptr++;
+        src_ptr += 4;
+#else
         *dst_ptr  = *src_ptr++; dst_ptr++;
         *dst_ptr  = *src_ptr++;
         *dst_ptr |= ((*src_ptr   & 0x0F) << 4); dst_ptr++;
         *dst_ptr  = ((*src_ptr++ & 0xF0) >> 4);
         *dst_ptr |= ((*src_ptr++ & 0x0F) << 4); dst_ptr++;
+#endif
     }
 }
 
@@ -1121,6 +1143,9 @@ void correct_error_and_recover_ke(const uint8_t* e_prime,
                                   uint8_t *k_e)
 {
     int32_t i;
+#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+    int32_t block, position;
+#endif
     ff_unit a;
     packed_t bit_value, *e_prime_ptr, *e_ptr;
     
@@ -1136,13 +1161,25 @@ void correct_error_and_recover_ke(const uint8_t* e_prime,
         a = p[i];
         bit_value = bit_value(e_prime_ptr, a);
         bit_set_value(e_ptr, i, bit_value); /* Permute e_prime */
+#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+		block = ((i-NTS_KEM_PARAM_A) >> LOG2) << LOG2;
+		position = (i-NTS_KEM_PARAM_A) & MOD;
+		position = block + BITSIZE - ((position >> 3) << 3) - (8 - (position & 7));
+        bit_toggle_value((packed_t *)k_e, position, bit_value); /* Step 10: recovering k_e */
+#else
         bit_toggle_value((packed_t *)k_e, i-NTS_KEM_PARAM_A, bit_value); /* Step 10: recovering k_e */
+#endif
     }
     for (; i<NTS_KEM_PARAM_N; i++) {
         a = p[i];
         bit_value = bit_value(e_prime_ptr, a);
         bit_set_value(e_ptr, i, bit_value); /* Permute e_prime */
     }
+#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+    for (i=0; i<NTS_KEM_PARAM_N_VEC; i++) {
+        e_ptr[i] = BSWAP_64(e_ptr[i]);
+    }
+#endif
 }
 
 /**
@@ -1201,8 +1238,14 @@ void load_input_ciphertext(uint64_t *out, const uint8_t *in)
 
     for (i=0; i<NTS_KEM_PARAM_BC_VEC-1; i++) {
         memcpy(&out[i], ptr, (UINT64_SIZE*sizeof(uint64_t)));
+#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+        out[i] = BSWAP_64(out[i]);
+#endif
         ptr += (UINT64_SIZE*sizeof(uint64_t));
     }
     out[NTS_KEM_PARAM_BC_VEC-1] = 0;
     memcpy(&out[NTS_KEM_PARAM_BC_VEC-1], ptr, (UINT64_SIZE*sizeof(uint64_t)));
+#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+    out[NTS_KEM_PARAM_BC_VEC-1] = BSWAP_64(out[NTS_KEM_PARAM_BC_VEC-1]);
+#endif
 }

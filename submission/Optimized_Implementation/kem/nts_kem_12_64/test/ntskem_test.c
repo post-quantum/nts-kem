@@ -3,7 +3,7 @@
  *  NTS-KEM test
  *
  *  Parameter: NTS-KEM(12, 64)
- *  Platform: 64-bit
+ *  Platform: Intel 64-bit
  *
  *  This file is part of the optimized implemention of NTS-KEM
  *  submitted as part of NIST Post-Quantum Cryptography
@@ -79,7 +79,15 @@ int testkem_nts(int iterations)
         }
         fclose(fp);
 #endif
+#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+		i = ( (((uint32_t)it) << 24) & 0xFF000000 ) |
+		    ( (((uint32_t)it) <<  8) & 0x00FF0000 ) |
+		    ( (((uint32_t)it) >>  8) & 0x0000FF00 ) |
+		    ( (((uint32_t)it) >> 24) & 0x000000FF );
+        memcpy(&entropy_input[48-sizeof(i)], &i, sizeof(i));
+#else
         memcpy(&entropy_input[48-sizeof(it)], &it, sizeof(it));
+#endif
         
         fprintf(stdout, "Iteration: %d, Seed: ", it);
         for (i=0; i<sizeof(entropy_input); i++) fprintf(stdout, "%02x", entropy_input[i]);
