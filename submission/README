@@ -27,6 +27,7 @@ Supporting_Documentation:
 
 Reference_Implementation:
     kem/nts_kem_12_64 - the ANSI C code of the reference implementation of NTS-KEM(12, 64)
+	LICENSE - the content of the MIT license
         README - contains information on compilation and generating KATs
         Makefile - script to compile/clean NTS-KEM(12,64)
         additive_fft.c - part of reference implementation
@@ -62,6 +63,7 @@ Reference_Implementation:
         test/ntskem_test.h - test code for this parameter
 
     kem/nts_kem_13_80 - the ANSI C code of the reference implementation of NTS-KEM(13, 80)
+	LICENSE - the content of the MIT license
         README - contains information on compilation and generating KATs
         Makefile - script to compile/clean NTS-KEM(13,80)
         additive_fft.c - part of reference implementation
@@ -97,6 +99,7 @@ Reference_Implementation:
         test/ntskem_test.h - test code for this parameter
 
     kem/nts_kem_13_136 - the ANSI C code of the reference implementation of NTS-KEM(13, 136)
+	LICENSE - the content of the MIT license
         README - contains information on compilation and generating KATs
         Makefile - script to compile/clean NTS-KEM(13,136)
         additive_fft.c - part of reference implementation
@@ -133,6 +136,7 @@ Reference_Implementation:
 
 Optimized_Implementation:
     kem/nts_kem_12_64 - the Intel 64-bit optimized ANSI C implementation of NTS-KEM(12, 64)
+	LICENSE - the content of the MIT license
         README - contains information on compilation and generating KATs
         Makefile - script to compile/clean NTS-KEM(12,64)
         api.h - contains parameters specific to this implementation
@@ -171,6 +175,7 @@ Optimized_Implementation:
         test/ntskem_test.h - test code for this parameter
 
     kem/nts_kem_13_80 - the Intel 64-bit optimized ANSI C implementation of NTS-KEM(13, 80)
+	LICENSE - the content of the MIT license
         README - contains information on compilation and generating KATs
         Makefile - script to compile/clean NTS-KEM(13,80)
         api.h - contains parameters specific to this implementation
@@ -208,6 +213,7 @@ Optimized_Implementation:
         test/ntskem_test.h - test code for this parameter
 
     kem/nts_kem_13_136 - the Intel 64-bit optimized ANSI C implementation of NTS-KEM(13, 136)
+	LICENSE - the content of the MIT license
         README - contains information on compilation and generating KATs
         Makefile - script to compile/clean NTS-KEM(13,136)
         api.h - contains parameters specific to this implementation
@@ -246,6 +252,7 @@ Optimized_Implementation:
 
 Additional_Implementation:
     kem/nts_kem_12_64/avx2 - the AVX2 optimized ANSI C implementation of of NTS-KEM(12, 64)
+	LICENSE - the content of the MIT license
         README - contains information on compilation and generating KATs
         Makefile - script to compile/clean NTS-KEM(12,64)
         api.h - contains parameters specific to this implementation
@@ -286,6 +293,7 @@ Additional_Implementation:
         utils.h - part of AVX2 optimized implementation
 
     kem/nts_kem_12_64/sse2 - the SSE2/SSE4.1 optimized ANSI C implementation of of NTS-KEM(12, 64)
+	LICENSE - the content of the MIT license
         README - contains information on compilation and generating KATs
         Makefile - script to compile/clean NTS-KEM(12,64)
         api.h - contains parameters specific to this implementation
@@ -326,6 +334,7 @@ Additional_Implementation:
         utils.h - part of SSE2/SSE4.1 optimized implementation
 
     kem/nts_kem_13_80/avx2 - the AVX2 optimized ANSI C implementation of of NTS-KEM(13, 80)
+	LICENSE - the content of the MIT license
         README - contains information on compilation and generating KATs
         Makefile - script to compile/clean NTS-KEM(13,80)
         api.h - contains parameters specific to this implementation
@@ -365,6 +374,7 @@ Additional_Implementation:
         utils.h - part of AVX2 optimized implementation
 
     kem/nts_kem_13_80/sse2 - the SSE2/SSE4.1 optimized ANSI C implementation of of NTS-KEM(13, 80)
+	LICENSE - the content of the MIT license
         README - contains information on compilation and generating KATs
         Makefile - script to compile/clean NTS-KEM(13,80)
         api.h - contains parameters specific to this implementation
@@ -404,6 +414,7 @@ Additional_Implementation:
         utils.h - part of SSE2/SSE4.1 optimized implementation
 
     kem/nts_kem_13_136/avx2 - the AVX2 optimized ANSI C implementation of of NTS-KEM(13, 136)
+	LICENSE - the content of the MIT license
         README - contains information on compilation and generating KATs
         Makefile - script to compile/clean NTS-KEM(13,136)
         api.h - contains parameters specific to this implementation
@@ -443,6 +454,7 @@ Additional_Implementation:
         utils.h - part of AVX2 optimized implementation
 
     kem/nts_kem_13_136/sse2 - the SSE2/SSE4.1 optimized ANSI C implementation of of NTS-KEM(13, 136)
+	LICENSE - the content of the MIT license
         README - contains information on compilation and generating KATs
         Makefile - script to compile/clean NTS-KEM(13,136)
         api.h - contains parameters specific to this implementation
