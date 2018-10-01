@@ -21,54 +21,21 @@
 #define _BITS_H
 
 #include <stdint.h>
-#include <limits.h>
 
-#undef BITS_PER_LONG
-#if ULONG_MAX == 0xffffffffUL
-#	define	BITS_PER_LONG	32
-#elif ULONG_MAX == 0xffffffffffffffffUL
-#	define	BITS_PER_LONG	64
-#else
-#	error	Sorry, this architecture is not supported yet
-#endif
-
-/*
- * The following two definitions are important!
- */
-#define BITSIZE				BITS_PER_LONG
+#undef  BITS_PER_LONG
+#define BITS_PER_LONG       64
+#define BITSIZE             BITS_PER_LONG
 
 /*
  * Values for LOG2, MOD and type of 'packed_t'
  */
-#if   BITSIZE == 8
-#	define	LOG2						3
-#	define  MOD							0x7
-#	define  ONE							0x1U
-#   define  ALL_ONES                    0xFFU
-	typedef uint8_t				packed_t;
-#elif BITSIZE == 16
-#   define  LOG2						4
-#   define	MOD							0xF
-#   define	ONE							0x1U
-#   define  ALL_ONES                    0xFFFFU
-	typedef uint16_t			packed_t;
-#elif BITSIZE == 32
-#   define  LOG2						5
-#   define  MOD							0x1F
-#   define  ONE							0x1U
-#   define  ALL_ONES                    0xFFFFFFFFU
-	typedef uint32_t			packed_t;
-#elif BITSIZE == 64
-#   define  LOG2						6
-#   define  MOD							0x3F
-#   define  ONE							0x1ULL
-#   define  ALL_ONES                    0xFFFFFFFFFFFFFFFFULL
-	typedef uint64_t			packed_t;
-#else
-#   error   Unknown BITSIZE, valid values are 8, 16, 32 and 64
-#endif
+#define  LOG2               6
+#define  MOD                0x3F
+#define  ONE                0x1ULL
+#define  ALL_ONES           0xFFFFFFFFFFFFFFFFULL
+typedef uint64_t            packed_t;
 
-#define ALIGNMENT   64 /* used for row-alignment */
+#define ALIGNMENT           64 /* used for row-alignment */
 
 /*
  * Elementary bitops
@@ -80,6 +47,15 @@
 #define bit_set_value(v,i,a)      (v)[(i)>>LOG2] |=  ((a)<<((i) & MOD))
 #define bit_toggle_value(v,i,a)   (v)[(i)>>LOG2] ^=  ((a)<<((i) & MOD))
 #define bit_value(v,i)          (((v)[(i)>>LOG2] & (1ULL<<((i) & MOD))) >> ((i) & MOD))
+
+#define BSWAP_64(x)				(((uint64_t)(x) << 56) | \
+								(((uint64_t)(x) << 40) & 0xff000000000000ULL) | \
+								(((uint64_t)(x) << 24) & 0xff0000000000ULL) | \
+								(((uint64_t)(x) << 8)  & 0xff00000000ULL) | \
+								(((uint64_t)(x) >> 8)  & 0xff000000ULL) | \
+								(((uint64_t)(x) >> 24) & 0xff0000ULL) | \
+								(((uint64_t)(x) >> 40) & 0xff00ULL) | \
+								((uint64_t)(x)  >> 56))
 
 static inline uint32_t vector_popcount(uint64_t a)
 {

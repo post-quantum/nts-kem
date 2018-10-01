@@ -192,8 +192,9 @@ static inline void _m4ri_add_rows_rev_from_gray_table(matrix_ff2* A,
                                                       uint32_t k)
 {
     int32_t i;
-    uint8_t *ptr, x, x0, x1, mask;
+    uint8_t *ptr, *prev_ptr, x, x0, x1, mask;
     uint32_t hi, lo;
+    int8_t prev_offset = 0;
     uint8_t mask_hi = 0, mask_lo = 0;
     
     hi = (c_end-1) >> 3;
@@ -203,10 +204,20 @@ static inline void _m4ri_add_rows_rev_from_gray_table(matrix_ff2* A,
     mask = (mask_hi & mask_lo);
     mask = CT_mux(CT_is_equal_zero(mask_hi), mask_lo, mask);
     
+#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+    prev_offset = (int8_t)CT_mux(CT_is_equal_zero(hi & 7), (int8_t)-15, (int8_t)1);
+#else
+    prev_offset = -1;
+#endif
     for (i=(int32_t)r_start-1; i>=(int32_t)r_end; i--) {
+#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+        ptr = M4R_ROW(A, i) + hi - (2*(hi & 7)-7);
+#else
         ptr = M4R_ROW(A, i) + hi;
+#endif
+        prev_ptr = ptr + prev_offset;
         x0 = (((*ptr & mask_hi) << (STRIPE_SIZE - ((c_end-k) & 7))) |
-              ((*(ptr-1) & mask_lo) >> ((c_end-k) & 7)));
+              ((*prev_ptr & mask_lo) >> ((c_end-k) & 7)));
         x1 = (*ptr & mask) >> ((c_end-k) & 7);
         x = (uint8_t)CT_mux(CT_is_equal(hi, lo), x1, x0);
         x &= ((1 << k)-1);
