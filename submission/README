@@ -497,17 +497,17 @@ KAT:
     generate-kats.sh - a Bash script to generate the KATs and intermediate values
 
     kem/nts_kem_12_64:
-        PQCkemKAT_9216.req - KAT request file of NTS-KEM(12, 64)
-        PQCkemKAT_9216.rsp - KAT response file of NTS-KEM(12, 64)
-        PQCkemKAT_9216.intval - Intermediate values from NTS-KEM(12, 64) reference implementation
+        PQCkemKAT_9248.req - KAT request file of NTS-KEM(12, 64)
+        PQCkemKAT_9248.rsp - KAT response file of NTS-KEM(12, 64)
+        PQCkemKAT_9248.intval - Intermediate values from NTS-KEM(12, 64) reference implementation
 
     kem/nts_kem_13_80:
-        PQCkemKAT_17524.req - KAT request file of NTS-KEM(13, 80)
-        PQCkemKAT_17524.rsp - KAT response file of NTS-KEM(13, 80)  
-        PQCkemKAT_17524.intval - Intermediate values from NTS-KEM(13, 80) reference implementation
+        PQCkemKAT_17556.req - KAT request file of NTS-KEM(13, 80)
+        PQCkemKAT_17556.rsp - KAT response file of NTS-KEM(13, 80)  
+        PQCkemKAT_17556.intval - Intermediate values from NTS-KEM(13, 80) reference implementation
 
     kem/nts_kem_13_136:
-        PQCkemKAT_19890.req - KAT request file of NTS-KEM(13, 136)
-        PQCkemKAT_19890.rsp - KAT response file of NTS-KEM(13, 136)
-        PQCkemKAT_19890.intval - Intermediate values from NTS-KEM(13, 136) reference implementation
+        PQCkemKAT_19922.req - KAT request file of NTS-KEM(13, 136)
+        PQCkemKAT_19922.rsp - KAT response file of NTS-KEM(13, 136)
+        PQCkemKAT_19922.intval - Intermediate values from NTS-KEM(13, 136) reference implementation
 

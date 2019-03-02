@@ -335,6 +335,19 @@ static inline uint32_t CT_mux(uint32_t ctl, uint32_t a, uint32_t b)
 }
 
 /**
+ *  Multiplexer: select 'a' or 'b' depending on 'ctl'
+ *
+ *  @param[in] ctl  Control value, either 0 or 1
+ *  @param[in] a    Input a
+ *  @param[in] b    Input b
+ *  @return a if ctl is 1, otherwise b is returned
+ **/
+static inline uint64_t CT_mux64(uint64_t ctl, uint64_t a, uint64_t b)
+{
+    return b ^ (-ctl & (a ^ b));
+}
+    
+/**
  *  Is 'a' a power of 2?
  *
  *  @param[in] a    Input a
