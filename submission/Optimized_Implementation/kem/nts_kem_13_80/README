@@ -22,7 +22,7 @@ Once the build is completed, you will have the following files:
                               check decap status for a number of iterations
 ./bin/ntskem-13-80-opt-kat  : a binary that generates the required KAT file
 
-The code here has been tested on gcc 4.9.2 and gcc 6.3 on Linux and clang-800
+The code here has been tested on gcc 4.9.2 and gcc 6.3 on Linux and clang-1000
 on OS X.
 
 

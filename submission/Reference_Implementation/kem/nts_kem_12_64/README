@@ -24,7 +24,7 @@ Once the build is completed, you will have the following files:
 ./bin/ntskem-12-64-intval : a binary that in addition to generate the KAT
                             file, also produce intermediate values
 
-The code here has been tested on gcc 4.9.2 and gcc 6.3 on Linux and clang-800
+The code here has been tested on gcc 4.9.2 and gcc 6.3 on Linux and clang-1000
 on OS X.
 
 

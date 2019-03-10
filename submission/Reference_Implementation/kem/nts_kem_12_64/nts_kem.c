@@ -163,7 +163,7 @@ int nts_kem_create(NTSKEM** nts_kem)
 
 #if defined(INTERMEDIATE_VALUES)
     fprintf(stdout, "# KGen Step 4. Random vector z\n");
-    fprintf_ffunit_vec(stdout, "z = ", priv->z, NTS_KEM_KEY_SIZE, "\n");
+    fprintf_uint8_vec(stdout, "z = ", priv->z, NTS_KEM_KEY_SIZE, "\n");
 #endif
 
     /**
