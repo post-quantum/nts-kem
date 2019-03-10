@@ -160,7 +160,12 @@ int nts_kem_create(NTSKEM** nts_kem)
      * Step 4. Randomly generate vector z where |z| = ℓ
      **/
     randombytes(priv->z, NTS_KEM_KEY_SIZE);
-    
+
+#if defined(INTERMEDIATE_VALUES)
+    fprintf(stdout, "# KGen Step 4. Random vector z\n");
+    fprintf_ffunit_vec(stdout, "z = ", priv->z, NTS_KEM_KEY_SIZE, "\n");
+#endif
+
     /**
      * Step 5. Partion vectors a = (a_a | a_b | a_c) and h = (h_a | h_b | h_c)
      *         and let a* = (a_b | a_c) and  h* = (h_b | h_c)
@@ -169,7 +174,7 @@ int nts_kem_create(NTSKEM** nts_kem)
     memcpy(priv->h, &h[NTS_KEM_PARAM_A], NTS_KEM_PARAM_BC*sizeof(ff_unit));
     
 #if defined(INTERMEDIATE_VALUES)
-    fprintf(stdout, "# KGen Step 4. Obtain a* = (a_b | a_c) and h* = (h_b | h_c)\n");
+    fprintf(stdout, "# KGen Step 5. Obtain a* = (a_b | a_c) and h* = (h_b | h_c)\n");
     fprintf_ffunit_vec(stdout, "a_ast = ", priv->a, NTS_KEM_PARAM_BC, "\n");
     fprintf_ffunit_vec(stdout, "h_ast = ", priv->h, NTS_KEM_PARAM_BC, "\n");
 #endif
@@ -553,7 +558,7 @@ int nts_kem_decapsulate(const uint8_t *sk,
     /**
      * First of all, construct vector c' = (1_a | c_b | c_c)
      **/
-    memset(c_buf, 0xFF, sizeof(c_buf));
+    memset(c_buf, 0xFF, NTS_KEM_PARAM_CEIL_K_BYTE - NTS_KEM_KEY_SIZE);
     for (i=0; i<kNTSKEMKeysize + NTS_KEM_PARAM_CEIL_R_BYTE; i++) {
         c_buf[NTS_KEM_PARAM_CEIL_K_BYTE - kNTSKEMKeysize + i] = c_ast[i];
     }

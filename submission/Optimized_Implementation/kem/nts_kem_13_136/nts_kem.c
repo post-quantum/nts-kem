@@ -519,7 +519,7 @@ int nts_kem_decapsulate(const uint8_t *sk,
     /**
      * Load the full input ciphertext c' = (1_a | c_b | c_c)
      **/
-    memset(c_buf, 0xFF, sizeof(c_buf));
+    memset(c_buf, 0xFF, NTS_KEM_PARAM_CEIL_K_BYTE - NTS_KEM_KEY_SIZE);
     for (i=0; i<kNTSKEMKeysize + NTS_KEM_PARAM_CEIL_R_BYTE; i++) {
         c_buf[NTS_KEM_PARAM_CEIL_K_BYTE - kNTSKEMKeysize + i] = c_ast[i];
     }
