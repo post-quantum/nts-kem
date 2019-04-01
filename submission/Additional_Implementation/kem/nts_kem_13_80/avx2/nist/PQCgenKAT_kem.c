@@ -96,7 +96,8 @@ main()
     fprintf(stdout, "#     (d) The parity-check matrix H (in reduced-echelon form)\n");
     fprintf(stdout, "#     (d) Vectors p, a, h after potential column swapping introduced in (d)\n");
     fprintf(stdout, "#     (e) The matrix Q\n");
-    fprintf(stdout, "#   Step 4. The vector a* (labelled a_ast) and h* (labelled h_ast)\n");
+    fprintf(stdout, "#   Step 4. The random vector z (labelled z)\n");
+    fprintf(stdout, "#   Step 5. The vector a* (labelled a_ast) and h* (labelled h_ast)\n");
     fprintf(stdout, "# For encapsulation, the following intermediate-values are output:\n");
     fprintf(stdout, "#   Step 1-2. Randomly error vector e.\n");
     fprintf(stdout, "#   Step 3. The vector k_e = SHAKE256(e)\n");

@@ -36,6 +36,7 @@ typedef struct {
     ff_unit a[ NTS_KEM_PARAM_BC ];
     ff_unit h[ NTS_KEM_PARAM_BC ];
     ff_unit p[ NTS_KEM_PARAM_N ];
+    uint8_t z[ NTS_KEM_KEY_SIZE ];
 } NTSKEM_private;
 
 static const int kNTSKEMKeysize = NTS_KEM_KEY_SIZE;
@@ -176,7 +177,12 @@ int nts_kem_create(NTSKEM** nts_kem)
 #endif
     
     /**
-     * Step 4. Partion vectors a = (a_a | a_b | a_c) and h = (h_a | h_b | h_c)
+     * Step 4. Randomly generate vector z where |z| = ℓ
+     **/
+    randombytes(priv->z, NTS_KEM_KEY_SIZE);
+    
+    /**
+     * Step 5. Partion vectors a = (a_a | a_b | a_c) and h = (h_a | h_b | h_c)
      *         and let a* = (a_b | a_c) and  h* = (h_b | h_c)
      **/
     memcpy(priv->a, &a[NTS_KEM_PARAM_A], NTS_KEM_PARAM_BC*sizeof(ff_unit));
@@ -288,6 +294,7 @@ void nts_kem_release(NTSKEM *nts_kem)
             memset(priv->a, 0, sizeof(priv->a));
             memset(priv->h, 0, sizeof(priv->h));
             memset(priv->p, 0, sizeof(priv->p));
+            memset(priv->z, 0, sizeof(priv->z));
             ff_release(priv->ff2m);
             priv->ff2m = NULL;
             priv->m = 0;
@@ -518,6 +525,12 @@ int nts_kem_decapsulate(const uint8_t *sk,
     ff_unit syndromes[2*NTS_KEM_PARAM_T];
     uint8_t e[NTS_KEM_PARAM_CEIL_N_BYTE];
     uint8_t kr_in_buf[kNTSKEMKeysize + NTS_KEM_PARAM_CEIL_N_BYTE];
+    uint8_t xof_buf[kNTSKEMKeysize + NTS_KEM_PARAM_CEIL_N_BYTE];
+    uint8_t c_buf[NTS_KEM_PARAM_CEIL_N_BYTE];
+    uint64_t mux_selector;
+    uint64_t *out_ptr = NULL;
+    const uint64_t *in_left_ptr = NULL;
+    const uint64_t *in_right_ptr = NULL;
 #if defined(BENCHMARK)
     uint64_t start_clock, end_clock;
 #endif
@@ -535,6 +548,14 @@ int nts_kem_decapsulate(const uint8_t *sk,
     
     priv = nts_kem->priv;
 
+    /**
+     * Load the full input ciphertext c' = (1_a | c_b | c_c)
+     **/
+    memset(c_buf, 0xFF, NTS_KEM_PARAM_CEIL_K_BYTE - NTS_KEM_KEY_SIZE);
+    for (i=0; i<kNTSKEMKeysize + NTS_KEM_PARAM_CEIL_R_BYTE; i++) {
+        c_buf[NTS_KEM_PARAM_CEIL_K_BYTE - kNTSKEMKeysize + i] = c_ast[i];
+    }
+    
     /**
      * Load the input ciphertext c* to a vectorised array
      **/
@@ -632,8 +653,9 @@ int nts_kem_decapsulate(const uint8_t *sk,
 #endif
     
     /**
-     * Step 9. Check if k_e == SHAKE256(e), if not return an error indicating
-     *         an invalid ciphertext, otherwise return k_r = SHAKE256(k_e | e)
+     * Step 9. Return k_r whereby if k_e == SHAKE256(e) and wt(e) = τ,
+     *         k_r = SHAKE256(k_e | e) otherwise k_r = SHAKE256(z | c')
+     *         where z is part of the private-key and c' = (1_a | c_b | c_c)
      *
      * Obtain k_e from the error pattern, k_e = SHAKE256(e)
      **/
@@ -646,17 +668,34 @@ int nts_kem_decapsulate(const uint8_t *sk,
      **/
     memcpy(&kr_in_buf[kNTSKEMKeysize], e, NTS_KEM_PARAM_CEIL_N_BYTE);
     /**
-     * Obtain k_r, i.e. k_r = SHAKE256(k_e | e)
-     **/
-    shake_256(kr_in_buf, kNTSKEMKeysize + NTS_KEM_PARAM_CEIL_N_BYTE, k_r, kNTSKEMKeysize);
-    /**
      * Verify the equality of k_e and SHAKE256(e)
      **/
     for (checksum=0,i=0; i<kNTSKEMKeysize; i++) {
         checksum += (c_ast[i] ^ kr_in_buf[i]);
     }
-    status = CT_mux(CT_is_equal_zero(checksum) && CT_is_equal(error_weight, NTS_KEM_PARAM_T),
-                    NTS_KEM_SUCCESS, NTS_KEM_INVALID_CIPHERTEXT);
+    mux_selector = CT_is_equal_zero(checksum) && CT_is_equal(error_weight, NTS_KEM_PARAM_T);
+    status = CT_mux((uint32_t)mux_selector, NTS_KEM_SUCCESS, NTS_KEM_INVALID_CIPHERTEXT);
+    
+    /**
+     * Prepare input buffer for final SHAKE256 XOF operation
+     **/
+    out_ptr = (uint64_t *)xof_buf;
+    in_left_ptr = (const uint64_t *)kr_in_buf;
+    in_right_ptr = (const uint64_t *)priv->z;
+    for (i=0; i<kNTSKEMKeysize/sizeof(uint64_t); i++) {
+        *out_ptr++ = CT_mux64(mux_selector, *in_left_ptr++, *in_right_ptr++);
+    }
+    in_left_ptr = (const uint64_t *)e;
+    in_right_ptr = (const uint64_t *)c_buf;
+    for (i=0; i<NTS_KEM_PARAM_CEIL_N_BYTE/sizeof(uint64_t); i++) {
+        *out_ptr++ = CT_mux64(mux_selector, *in_left_ptr++, *in_right_ptr++);
+    }
+    /**
+     * Obtain k_r, i.e. k_r = SHAKE256(k_e | e) in the case of correct decapsulation,
+     * otherwise obtain k_r = SHAKE256(z | c').
+     **/
+    shake_256(xof_buf, kNTSKEMKeysize + NTS_KEM_PARAM_CEIL_N_BYTE, k_r, kNTSKEMKeysize);
+    
 #if defined(BENCHMARK)
     end_clock = cpucycles();
     fprintf(stdout, "# Decap : (4) kr_and_status consumes %" PRId64 " cycles\n", end_clock-start_clock);
@@ -1098,6 +1137,9 @@ int serialise_private_key(NTSKEM *nts_kem)
     key_ptr += (NTS_KEM_PARAM_BC * 3/2);
     
     pack_buffer((const uint8_t *)priv->p, NTS_KEM_PARAM_N, key_ptr);
+    key_ptr += (NTS_KEM_PARAM_N * 3/2);
+    
+    memcpy(key_ptr, priv->z, NTS_KEM_KEY_SIZE);
     
     return NTS_KEM_SUCCESS;
 }
@@ -1122,7 +1164,10 @@ int deserialise_private_key(NTSKEM* nts_kem, const uint8_t *buf)
     buf += (NTS_KEM_PARAM_BC * 3/2);
     
     unpack_buffer(buf, priv->p, NTS_KEM_PARAM_N);
+    buf += (NTS_KEM_PARAM_N * 3/2);
     
+    memcpy(priv->z, buf, NTS_KEM_KEY_SIZE);
+
     return NTS_KEM_SUCCESS;
 }
 

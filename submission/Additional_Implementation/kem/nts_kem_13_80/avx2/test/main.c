@@ -11,6 +11,7 @@
  **/
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdint.h>
 #include "random.h"
 #include "ntskem_test.h"
@@ -28,9 +29,14 @@ static const char* nonce = "0bf814b411f65ec4866be1abb59d3c32a57b9037e01f429c";
 int main(int argc, char *argv[])
 {
     int status;
+    int iterations = 500;
+
+    if (argc >= 2) {
+        iterations = atoi(argv[1]);
+    }
     
     randombytes_init(entropy_input, (const unsigned char *)nonce, 256);
-    status = testkem_nts(500);
+    status = testkem_nts(iterations);
     printf("NTS-KEM(%d, %d) test: %s\n", NTSKEM_M, NTSKEM_T, status ? "PASS" : "FAIL");
 
     return 0;

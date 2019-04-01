@@ -24,7 +24,7 @@ Once the build is completed, you will have the following files:
 ./bin/ntskem-13-136-intval : a binary that in addition to generate the KAT
                              file, also produce intermediate values
 
-The code here has been tested on gcc 4.9.2 and gcc 6.3 on Linux and clang-800
+The code here has been tested on gcc 4.9.2 and gcc 6.3 on Linux and clang-1000
 on OS X.
 
 
@@ -35,8 +35,8 @@ by executing the following command:
 
 ./bin/ntskem-13-136-kat
 
-It may take a while to run. It produces PQCkemKAT_19890.req and 
-PQCkemKAT_19890.rsp, which contains 100 runs of NTS-KEM key-generation,
+It may take a while to run. It produces PQCkemKAT_19922.req and 
+PQCkemKAT_19922.rsp, which contains 100 runs of NTS-KEM key-generation,
 encapsulation and decapsulation. The number of iterations can be changed
 from nist/PQCgenKAT.c file, look for KATNUM macro.
 
