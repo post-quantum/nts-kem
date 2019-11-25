@@ -149,7 +149,7 @@ static inline int hash(uint8_t* out, size_t outlen,
     return 0;
 }
 
-void shake_256(const unsigned char *input, unsigned int inputByteLen, unsigned char *output, int outputByteLen)
+void sha3_256(const unsigned char *input, unsigned int inputByteLen, unsigned char *output)
 {
-    hash(output, outputByteLen, input, inputByteLen, 200-(256/4), 0x1f);
+    hash(output, 32, input, inputByteLen, 200-(256/4), 0x06);
 }

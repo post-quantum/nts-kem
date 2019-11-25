@@ -415,16 +415,16 @@ static inline int hash(uint8_t* out, size_t outlen,
 
 /*** FIPS202 SHAKE VOFs ***/
 /*defshake(128)*/
-defshake(256)
+/*defshake(256)*/
 
 /*** FIPS202 SHA3 FOFs ***/
 /*defsha3(224)*/
-defsha3(256)
+/*defsha3(256)*/
 /*defsha3(384)*/
 /*defsha3(512)*/
 
-void shake_256(const unsigned char *input, unsigned int inputByteLen, unsigned char *output, int outputByteLen)
+void sha3_256(const unsigned char *input, unsigned int inputByteLen, unsigned char *output)
 {
-	hash(output, outputByteLen, input, inputByteLen, 256, KECCAK_DELIM_XOF);
+	hash(output, 32, input, inputByteLen, 256, KECCAK_DELIM_DIGEST);
 }
 

@@ -100,7 +100,7 @@ main()
     fprintf(stdout, "#   Step 5. The vector a* (labelled a_ast) and h* (labelled h_ast)\n");
     fprintf(stdout, "# For encapsulation, the following intermediate-values are output:\n");
     fprintf(stdout, "#   Step 1-2. Randomly error vector e.\n");
-    fprintf(stdout, "#   Step 3. The vector k_e = SHAKE256(e)\n");
+    fprintf(stdout, "#   Step 3. The vector k_e = SHA3_256(e)\n");
     fprintf(stdout, "#   Step 4. The message vector m\n");
     fprintf(stdout, "#   Step 5. The two parts of the ciphertext: c_b and c_c\n");
     fprintf(stdout, "#   Step 6. The vector k_r\n");
@@ -111,7 +111,7 @@ main()
     fprintf(stdout, "#   Step 1(f). The error vector e_prime\n");
     fprintf(stdout, "#   Step 2. The permuted version of e_prime: vector e\n");
     fprintf(stdout, "#   Step 3. The vector k_e, recovered from ciphertext and vector e\n");
-    fprintf(stdout, "#   Step 4. Output of SHAKE256(e) and vector k_r\n");
+    fprintf(stdout, "#   Step 4. Output of SHA3_256(e) and vector k_r\n");
     fprintf(stdout, "# Note that all random bytes are obtained using AES_CTR_DRBG (SP800-90A section 10.2.1.5.1),\n");
     fprintf(stdout, "# initialised by the per-run 'seed' value as indicated below.\n#\n");
 #endif
