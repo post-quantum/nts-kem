@@ -7,6 +7,6 @@
 #ifndef __KECCAK_H
 #define __KECCAK_H
 
-void shake_256(const unsigned char *input, unsigned int inputByteLen, unsigned char *output, int outputByteLen);
+void sha3_256(const unsigned char *input, unsigned int inputByteLen, unsigned char *output);
 
 #endif /* __KECCAK_H */

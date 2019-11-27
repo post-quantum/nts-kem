@@ -386,12 +386,12 @@ int nts_kem_encapsulate(const uint8_t *pk,
 #endif
     
     /**
-     * Step 3. Compute SHAKE256(e) to produce k_e
+     * Step 3. Compute SHA3_256(e) to produce k_e
      **/
-    shake_256(e, NTS_KEM_PARAM_CEIL_N_BYTE, k_e, kNTSKEMKeysize);
+    sha3_256(e, NTS_KEM_PARAM_CEIL_N_BYTE, k_e);
 
 #if defined(INTERMEDIATE_VALUES)
-    fprintf(stdout, "# Encap Step 3. k_e = SHAKE256(e)\n");
+    fprintf(stdout, "# Encap Step 3. k_e = SHA3_256(e)\n");
     fprintf_uint8_vec(stdout, "k_e = ", k_e, kNTSKEMKeysize, "\n");
 #endif
 
@@ -483,13 +483,13 @@ int nts_kem_encapsulate(const uint8_t *pk,
 #endif
     
     /**
-     * Step 6. Output the pair (k_r, c_ast) where k_r = SHAKE256(k_e | e)
+     * Step 6. Output the pair (k_r, c_ast) where k_r = SHA3_256(k_e | e)
      *
-     * Construct (k_e | e) and obtain k_r = SHAKE256(k_e | e)
+     * Construct (k_e | e) and obtain k_r = SHA3_256(k_e | e)
      **/
     memcpy(kr_in_buf, k_e, kNTSKEMKeysize);
     memcpy(&kr_in_buf[kNTSKEMKeysize], e, NTS_KEM_PARAM_CEIL_N_BYTE);
-    shake_256(kr_in_buf, kNTSKEMKeysize + NTS_KEM_PARAM_CEIL_N_BYTE, k_r, kNTSKEMKeysize);
+    sha3_256(kr_in_buf, kNTSKEMKeysize + NTS_KEM_PARAM_CEIL_N_BYTE, k_r);
 
 #if defined(INTERMEDIATE_VALUES)
     fprintf(stdout, "# Encap Step 6. Output the pair (k_r, c* = (c_b | c_c))\n");
@@ -529,7 +529,7 @@ int nts_kem_decapsulate(const uint8_t *sk,
     uint8_t e[NTS_KEM_PARAM_CEIL_N_BYTE], e_prime[NTS_KEM_PARAM_CEIL_N_BYTE];
     uint8_t kr_in_buf[kNTSKEMKeysize + NTS_KEM_PARAM_CEIL_N_BYTE];
     size_t roots_size = 0;
-    uint8_t xof_buf[kNTSKEMKeysize + NTS_KEM_PARAM_CEIL_N_BYTE];
+    uint8_t digest_buf[kNTSKEMKeysize + NTS_KEM_PARAM_CEIL_N_BYTE];
     uint8_t c_buf[NTS_KEM_PARAM_CEIL_N_BYTE];
     uint64_t mux_selector;
     uint64_t *out_ptr = NULL;
@@ -652,23 +652,23 @@ int nts_kem_decapsulate(const uint8_t *sk,
 #endif
     
     /**
-     * Step 4. Return k_r whereby if k_e == SHAKE256(e) and wt(e) = τ,
-     *         k_r = SHAKE256(k_e | e) otherwise k_r = SHAKE256(z | c')
+     * Step 4. Return k_r whereby if k_e == SHA3_256(e) and wt(e) = τ,
+     *         k_r = SHA3_256(k_e | e) otherwise k_r = SHA3_256(z | c')
      *         where z is part of the private-key and c' = (1_a | c_b | c_c)
      *
-     * Obtain k_e from the error pattern, k_e = SHAKE256(e)
+     * Obtain k_e from the error pattern, k_e = SHA3_256(e)
      **/
-    shake_256((const uint8_t *)e, NTS_KEM_PARAM_CEIL_N_BYTE, kr_in_buf, kNTSKEMKeysize);
+    sha3_256((const uint8_t *)e, NTS_KEM_PARAM_CEIL_N_BYTE, kr_in_buf);
 #if defined(INTERMEDIATE_VALUES)
-    fprintf(stdout, "# Decap Step 4. SHAKE256(e)\n");
-    fprintf_uint8_vec(stdout, "SHAKE256_e = ", kr_in_buf, NTS_KEM_KEY_SIZE, "\n");
+    fprintf(stdout, "# Decap Step 4. SHA3_256(e)\n");
+    fprintf_uint8_vec(stdout, "SHA3_256_e = ", kr_in_buf, NTS_KEM_KEY_SIZE, "\n");
 #endif
     /**
      * Construct (k_e | e)
      **/
     memcpy(&kr_in_buf[kNTSKEMKeysize], e, NTS_KEM_PARAM_CEIL_N_BYTE);
     /**
-     * Verify the equality of k_e and SHAKE256(e)
+     * Verify the equality of k_e and SHA3_256(e)
      **/
     for (checksum=0,i=0; i<kNTSKEMKeysize; i++) {
         checksum += (c_ast[i] ^ kr_in_buf[i]);
@@ -684,9 +684,9 @@ int nts_kem_decapsulate(const uint8_t *sk,
     status = CT_mux((uint32_t)mux_selector, NTS_KEM_SUCCESS, NTS_KEM_INVALID_CIPHERTEXT);
 
     /**
-     * Prepare input buffer for final SHAKE256 XOF operation
+     * Prepare input buffer for final SHA3_256 digest operation
      **/
-    out_ptr = (uint64_t *)xof_buf;
+    out_ptr = (uint64_t *)digest_buf;
     in_left_ptr = (const uint64_t *)kr_in_buf;
     in_right_ptr = (const uint64_t *)priv->z;
     for (i=0; i<kNTSKEMKeysize/sizeof(uint64_t); i++) {
@@ -698,10 +698,10 @@ int nts_kem_decapsulate(const uint8_t *sk,
         *out_ptr++ = CT_mux64(mux_selector, *in_left_ptr++, *in_right_ptr++);
     }
     /**
-     * Obtain k_r, i.e. k_r = SHAKE256(k_e | e) in the case of correct decapsulation,
-     * otherwise obtain k_r = SHAKE256(z | c').
+     * Obtain k_r, i.e. k_r = SHA3_256(k_e | e) in the case of correct decapsulation,
+     * otherwise obtain k_r = SHA3_256(z | c').
      **/
-    shake_256(xof_buf, kNTSKEMKeysize + NTS_KEM_PARAM_CEIL_N_BYTE, k_r, kNTSKEMKeysize);
+    sha3_256(digest_buf, kNTSKEMKeysize + NTS_KEM_PARAM_CEIL_N_BYTE, k_r);
 
 #if defined(INTERMEDIATE_VALUES)
     fprintf_uint8_vec(stdout, "k_r = ", k_r, NTS_KEM_KEY_SIZE, "\n");
@@ -767,6 +767,7 @@ int is_valid_goppa_polynomial(const FF2m *ff2m, const poly *Gz)
     if (status) {
         /* Does it have repeated roots? */
         /* F(z) = GCD(G(z), d/dz G(z))  */
+        status = 0;
         if (formal_derivative_poly(Gz, Dz)) {
             if (gcd_poly(ff2m, Gz, Dz, Fz)) {
                 status = (Fz->degree < 1);
