@@ -26,6 +26,7 @@
 #include "bits.h"
 #include "random.h"
 #include "m4r.h"
+#include "mem.h"
 
 #define STRIPE_SIZE         8
 #define STRIPE_SIZE_LOG     3
@@ -94,7 +95,7 @@ static inline void zero_vector(uint8_t *row_ptr, uint32_t stride)
         *vec_ptr = _mm_setzero_si128(); vec_ptr++;
     }
 #else
-    memset(row_ptr, 0, stride);
+    CT_memset(row_ptr, 0, stride);
 #endif
 }
 

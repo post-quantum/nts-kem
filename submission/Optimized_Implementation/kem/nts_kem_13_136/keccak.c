@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "keccak.h"
+#include "mem.h"
 
 #define KECCAK_MAX_RATE 200
 
@@ -221,7 +222,7 @@ keccak_finalize(keccak_state *s)
   // Xor in the last block.
   xorin8(s->a, s->block, s->rate);
 
-  memset(s->block, 0, sizeof(s->block));
+  CT_memset(s->block, 0, sizeof(s->block));
   s->finalized = 1;
   s->offset = s->rate;
 }
@@ -363,7 +364,7 @@ keccak_clone(keccak_state *out, const keccak_state *in)
 void
 keccak_cleanse(keccak_state *s)
 {
-  memset(s, 0, sizeof(keccak_state));
+  CT_memset(s, 0, sizeof(keccak_state));
 }
 
 /** The sponge-based hash construction. **/

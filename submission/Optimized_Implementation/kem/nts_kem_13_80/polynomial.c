@@ -15,6 +15,7 @@
 #include <string.h>
 #include "polynomial.h"
 #include "bits.h"
+#include "mem.h"
 #include "random.h"
 
 #define COPY_POLY(a, b)  (b)->degree = (a)->degree;\
@@ -49,7 +50,7 @@ void free_poly(poly* px)
 
 void zero_poly(poly* px)
 {
-    memset(px->coeff, 0, px->size*sizeof(ff_unit));
+    CT_memset(px->coeff, 0, px->size*sizeof(ff_unit));
 }
 
 poly* clone_poly(const poly *px)

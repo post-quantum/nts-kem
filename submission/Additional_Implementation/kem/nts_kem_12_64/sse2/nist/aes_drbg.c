@@ -9,6 +9,7 @@
 
 #include <string.h>
 #include "aes_drbg.h"
+#include "mem.h"
 #include <openssl/conf.h>
 #include <openssl/evp.h>
 #include <openssl/err.h>
@@ -45,10 +46,10 @@ seedexpander_init(AES_XOF_struct *ctx,
     ctx->ctr[9] = maxlen % 256;
     maxlen >>= 8;
     ctx->ctr[8] = maxlen % 256;
-    memset(ctx->ctr+12, 0x00, 4);
+    CT_memset(ctx->ctr+12, 0x00, 4);
     
     ctx->buffer_pos = 16;
-    memset(ctx->buffer, 0x00, 16);
+    CT_memset(ctx->buffer, 0x00, 16);
     
     return RNG_SUCCESS;
 }
@@ -149,8 +150,8 @@ randombytes_init(const unsigned char *entropy_input,
     if (personalization_string)
         for (i=0; i<48; i++)
             seed_material[i] ^= personalization_string[i];
-    memset(DRBG_ctx.Key, 0x00, 32);
-    memset(DRBG_ctx.V, 0x00, 16);
+    CT_memset(DRBG_ctx.Key, 0x00, 32);
+    CT_memset(DRBG_ctx.V, 0x00, 16);
     AES256_CTR_DRBG_Update(seed_material, DRBG_ctx.Key, DRBG_ctx.V);
     DRBG_ctx.reseed_counter = 1;
 }

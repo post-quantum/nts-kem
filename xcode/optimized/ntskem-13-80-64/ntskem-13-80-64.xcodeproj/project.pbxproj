@@ -40,6 +40,8 @@
 		D7634FB31FCF632600A1A478 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = D7634FB01FCF632600A1A478 /* main.c */; };
 		D7634FB41FCF632600A1A478 /* ntskem_test.c in Sources */ = {isa = PBXBuildFile; fileRef = D7634FB11FCF632600A1A478 /* ntskem_test.c */; };
 		D7634FB71FCF63CA00A1A478 /* libntskem-13-80-64.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D7634F5B1FCF61E200A1A478 /* libntskem-13-80-64.a */; };
+		D7FE5683238EA3EF0038EE7D /* mem.h in Headers */ = {isa = PBXBuildFile; fileRef = D7FE5681238EA3EF0038EE7D /* mem.h */; };
+		D7FE5684238EA3EF0038EE7D /* mem.c in Sources */ = {isa = PBXBuildFile; fileRef = D7FE5682238EA3EF0038EE7D /* mem.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -100,6 +102,8 @@
 		D7634FB01FCF632600A1A478 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = main.c; path = ../../../../submission/Optimized_Implementation/kem/nts_kem_13_80/test/main.c; sourceTree = "<group>"; };
 		D7634FB11FCF632600A1A478 /* ntskem_test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ntskem_test.c; path = ../../../../submission/Optimized_Implementation/kem/nts_kem_13_80/test/ntskem_test.c; sourceTree = "<group>"; };
 		D7634FB21FCF632600A1A478 /* ntskem_test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ntskem_test.h; path = ../../../../submission/Optimized_Implementation/kem/nts_kem_13_80/test/ntskem_test.h; sourceTree = "<group>"; };
+		D7FE5681238EA3EF0038EE7D /* mem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = mem.h; path = ../../../submission/Optimized_Implementation/kem/nts_kem_13_80/mem.h; sourceTree = "<group>"; };
+		D7FE5682238EA3EF0038EE7D /* mem.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = mem.c; path = ../../../submission/Optimized_Implementation/kem/nts_kem_13_80/mem.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,6 +167,8 @@
 				D7634F801FCF62EE00A1A478 /* polynomial.h */,
 				D7634F811FCF62EE00A1A478 /* random.c */,
 				D7634F821FCF62EE00A1A478 /* random.h */,
+				D7FE5681238EA3EF0038EE7D /* mem.h */,
+				D7FE5682238EA3EF0038EE7D /* mem.c */,
 			);
 			name = src;
 			sourceTree = "<group>";
@@ -217,6 +223,7 @@
 				D7634F921FCF62EE00A1A478 /* keccak.h in Headers */,
 				D7634F9A1FCF62EE00A1A478 /* aes_drbg.h in Headers */,
 				D7634FA21FCF62EE00A1A478 /* random.h in Headers */,
+				D7FE5683238EA3EF0038EE7D /* mem.h in Headers */,
 				D7634F8B1FCF62EE00A1A478 /* twist_factors_13.h in Headers */,
 				D7634FA01FCF62EE00A1A478 /* polynomial.h in Headers */,
 				D7634F9C1FCF62EE00A1A478 /* nts_kem_params.h in Headers */,
@@ -293,6 +300,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = D7634F521FCF61E200A1A478;
@@ -320,6 +328,7 @@
 				D7634F941FCF62EE00A1A478 /* m4r.c in Sources */,
 				D7634F911FCF62EE00A1A478 /* keccak.c in Sources */,
 				D7634F881FCF62EE00A1A478 /* bitslice_fft_64.c in Sources */,
+				D7FE5684238EA3EF0038EE7D /* mem.c in Sources */,
 				D7634F9F1FCF62EE00A1A478 /* polynomial.c in Sources */,
 				D7634FA11FCF62EE00A1A478 /* random.c in Sources */,
 				D7634F991FCF62EE00A1A478 /* aes_drbg.c in Sources */,

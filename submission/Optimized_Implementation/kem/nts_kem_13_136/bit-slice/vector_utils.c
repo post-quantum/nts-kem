@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "vector_utils.h"
+#include "mem.h"
 
 #undef bit_value
 #define bit_value(v,i)          (((v)[(i)>>6] & (1ULL<<((i) & 63))) >> ((i) & 63))
@@ -63,7 +64,7 @@ void vector_store_1d_64(uint16_t* b, const uint64_t a[PARAM_M], int32_t size)
 {
     int32_t i, j;
     
-    memset(b, 0, size*sizeof(uint16_t));
+    CT_memset(b, 0, size*sizeof(uint16_t));
     for (i=0; i<PARAM_M; i++) {
         for (j=0; j<size; j++) {
             b[j] |= (((a[i] >> j) & 1) << i);
@@ -76,7 +77,7 @@ void vector_store_2d_64(uint16_t* b, const uint64_t (*a)[PARAM_M], int32_t size)
     int32_t i, j, k;
     uint64_t v[1];
     
-    memset(b, 0, size*sizeof(uint16_t));
+    CT_memset(b, 0, size*sizeof(uint16_t));
     for (i=0; i<PARAM_M; i++) {
         for (j=0; j<size/64; j++) {
             v[0] = a[j][i];

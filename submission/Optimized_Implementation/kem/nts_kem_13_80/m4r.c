@@ -26,6 +26,7 @@
 #include "bits.h"
 #include "random.h"
 #include "m4r.h"
+#include "mem.h"
 
 #define STRIPE_SIZE         8
 #define STRIPE_SIZE_LOG     3
@@ -74,7 +75,7 @@ const uint8_t* _gray_codes_lut[] = {
 
 static inline void zero_vector(uint8_t *row_ptr, uint32_t stride)
 {
-    memset(row_ptr, 0, stride);
+    CT_memset(row_ptr, 0, stride);
 }
 
 void _m4ri_make_table_rev(matrix_ff2* T,
