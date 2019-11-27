@@ -20,6 +20,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "keccak.h"
+#include "mem.h"
 
 /******** The Keccak-f[1600] permutation ********/
 
@@ -142,9 +143,9 @@ static inline int hash(uint8_t* out, size_t outlen,
     foldP(out, outlen, setout);
     setout(a, out, outlen);
 #if defined(__STDC_WANT_LIB_EXT1__)
-    memset_s(a, 200, 0, 200);
+    CT_memset_s(a, 200, 0, 200);
 #else
-    memset(a, 0, 200);
+    CT_memset(a, 0, 200);
 #endif
     return 0;
 }

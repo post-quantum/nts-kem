@@ -17,6 +17,7 @@
 #include "m4r.h"
 #include "random.h"
 #include "keccak.h"
+#include "mem.h"
 #include "nts_kem_errors.h"
 
 #define M4R_ROW(M, r)                   ((uint8_t *)(M)->v + ((r) * (M)->stride))
@@ -77,7 +78,7 @@ void free_matrix_ff2(matrix_ff2 *M)
 
 void zero_matrix_ff2(matrix_ff2* M)
 {
-    memset(M->v, 0, M->stride * M->nrows);
+    CT_memset(M->v, 0, M->stride * M->nrows);
 }
 
 matrix_ff2* clone_matrix_ff2(const matrix_ff2* M)

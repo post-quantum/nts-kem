@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "ff.h"
+#include "mem.h"
 
 void bitslice_mul12_64 (uint64_t* c, const uint64_t* a, const uint64_t* b);
 void bitslice_mul12_256(__m256i*  d, const __m256i*  a, const __m256i*  b);
@@ -266,7 +267,7 @@ void ff_release(FF2m* ff2m)
 {
     if (ff2m) {
         if (ff2m->basis) {
-            memset(ff2m->basis, 0, ff2m->m*sizeof(ff_unit));
+            CT_memset(ff2m->basis, 0, ff2m->m*sizeof(ff_unit));
             free(ff2m->basis); ff2m->basis = NULL;
         }
         ff2m->m = 0;

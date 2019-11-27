@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "ff.h"
+#include "mem.h"
 
 ff_unit ff_add_m(const FF2m* ff2m, ff_unit a, ff_unit b)
 {
@@ -567,7 +568,7 @@ void ff_release(FF2m* ff2m)
 {
     if (ff2m) {
         if (ff2m->basis) {
-            memset(ff2m->basis, 0, ff2m->m*sizeof(ff_unit));
+            CT_memset(ff2m->basis, 0, ff2m->m*sizeof(ff_unit));
             free(ff2m->basis); ff2m->basis = NULL;
         }
         ff2m->m = 0;

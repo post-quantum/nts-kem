@@ -21,6 +21,7 @@
 #include "polynomial.h"
 #include "random.h"
 #include "keccak.h"
+#include "mem.h"
 #include "nts_kem_params.h"
 #include "nts_kem_errors.h"
 #include "vector_utils.h"
@@ -264,10 +265,10 @@ void nts_kem_release(NTSKEM *nts_kem)
     if (nts_kem) {
         priv = nts_kem->priv;
         if (priv) {
-            memset(priv->a, 0, sizeof(priv->a));
-            memset(priv->h, 0, sizeof(priv->h));
-            memset(priv->p, 0, sizeof(priv->p));
-            memset(priv->z, 0, sizeof(priv->z));
+            CT_memset(priv->a, 0, sizeof(priv->a));
+            CT_memset(priv->h, 0, sizeof(priv->h));
+            CT_memset(priv->p, 0, sizeof(priv->p));
+            CT_memset(priv->z, 0, sizeof(priv->z));
             ff_release(priv->ff2m);
             priv->ff2m = NULL;
             priv->m = 0;
@@ -278,7 +279,7 @@ void nts_kem_release(NTSKEM *nts_kem)
         if (nts_kem->public_key)
             free(nts_kem->public_key);
         if (nts_kem->private_key) {
-            memset(nts_kem->private_key, 0, NTS_KEM_PRIVATE_KEY_SIZE);
+            CT_memset(nts_kem->private_key, 0, NTS_KEM_PRIVATE_KEY_SIZE);
             free(nts_kem->private_key);
         }
         nts_kem->public_key_size = 0;
@@ -461,8 +462,8 @@ int nts_kem_encapsulate(const uint8_t *pk,
     
 
     status = NTS_KEM_SUCCESS;
-    memset(e, 0, NTS_KEM_PARAM_CEIL_N_BYTE);
-    memset(kr_in_buf, 0, kNTSKEMKeysize + NTS_KEM_PARAM_CEIL_N_BYTE);
+    CT_memset(e, 0, NTS_KEM_PARAM_CEIL_N_BYTE);
+    CT_memset(kr_in_buf, 0, kNTSKEMKeysize + NTS_KEM_PARAM_CEIL_N_BYTE);
     
     return status;
 }
@@ -520,7 +521,7 @@ int nts_kem_decapsulate(const uint8_t *sk,
     /**
      * Load the full input ciphertext c' = (1_a | c_b | c_c)
      **/
-    memset(c_buf, 0xFF, NTS_KEM_PARAM_CEIL_K_BYTE - NTS_KEM_KEY_SIZE);
+    CT_memset(c_buf, 0xFF, NTS_KEM_PARAM_CEIL_K_BYTE - NTS_KEM_KEY_SIZE);
     for (i=0; i<kNTSKEMKeysize + NTS_KEM_PARAM_CEIL_R_BYTE; i++) {
         c_buf[NTS_KEM_PARAM_CEIL_K_BYTE - kNTSKEMKeysize + i] = c_ast[i];
     }
@@ -632,11 +633,11 @@ int nts_kem_decapsulate(const uint8_t *sk,
     sha3_256(digest_buf, kNTSKEMKeysize + NTS_KEM_PARAM_CEIL_N_BYTE, k_r);
 
 decapsulation_failure:
-    memset(kr_in_buf, 0, kNTSKEMKeysize + NTS_KEM_PARAM_CEIL_N_BYTE);
-    memset(e, 0, NTS_KEM_PARAM_CEIL_N_BYTE);
-    memset(e_prime, 0, NTS_KEM_PARAM_CEIL_N_BYTE);
-    memset(syndromes, 0, sizeof(syndromes));
-    memset(evals, 0, sizeof(evals));
+    CT_memset(kr_in_buf, 0, kNTSKEMKeysize + NTS_KEM_PARAM_CEIL_N_BYTE);
+    CT_memset(e, 0, NTS_KEM_PARAM_CEIL_N_BYTE);
+    CT_memset(e_prime, 0, NTS_KEM_PARAM_CEIL_N_BYTE);
+    CT_memset(syndromes, 0, sizeof(syndromes));
+    CT_memset(evals, 0, sizeof(evals));
     if (nts_kem)
         nts_kem_release(nts_kem);
     
@@ -698,9 +699,9 @@ int is_valid_goppa_polynomial(const FF2m *ff2m, const poly *Gz)
     
     zero_poly(Dz); free_poly(Dz);
     zero_poly(Fz); free_poly(Fz);
-    memset(g, 0, sizeof(g));
-    memset(v, 0, sizeof(v));
-    memset(evals, 0, sizeof(evals));
+    CT_memset(g, 0, sizeof(g));
+    CT_memset(v, 0, sizeof(v));
+    CT_memset(evals, 0, sizeof(evals));
     
     return status;
 }
@@ -747,7 +748,7 @@ poly* create_random_goppa_polynomial(const FF2m *ff2m, int degree)
          *     in F_{2^m} or G(z) has repeated roots in any extension field.
          **/
     } while (!Gz->coeff[0] || !is_valid_goppa_polynomial(ff2m, Gz));
-    memset(buffer, 0, sizeof(buffer));
+    CT_memset(buffer, 0, sizeof(buffer));
 
     return Gz;
 }
@@ -810,7 +811,7 @@ matrix_ff2* create_matrix_G(const NTSKEM* nts_kem,
      * Permute the bit-slice output of the FFT with permutation p
      **/
     for (j=0; j<NTS_KEM_PARAM_M; j++) {
-        memset(v, 0, sizeof(v));
+        CT_memset(v, 0, sizeof(v));
         for (i=0; i<NTS_KEM_PARAM_N; i++) {
             l = priv->p[i];
             v[i >> 6] |= (((vh[l >> 6][j] & (1ULL << (l & 63))) >> (l & 63)) << (i & 63));
@@ -1148,8 +1149,8 @@ int compute_syndrome(const NTSKEM* nts_kem,
     vector_load_2d_64(a, priv->a, NTS_KEM_PARAM_BC);
     vector_load_2d_64(g, priv->h, NTS_KEM_PARAM_BC);
     
-    memset(s, 0, 2*NTS_KEM_PARAM_T*sizeof(ff_unit));
-    memset(h, 0, NTS_KEM_PARAM_BC_VEC*NTS_KEM_PARAM_M*sizeof(uint64_t));
+    CT_memset(s, 0, 2*NTS_KEM_PARAM_T*sizeof(ff_unit));
+    CT_memset(h, 0, NTS_KEM_PARAM_BC_VEC*NTS_KEM_PARAM_M*sizeof(uint64_t));
     for (i=0; i<NTS_KEM_PARAM_BC_VEC; i++) {
         for (j=0; j<NTS_KEM_PARAM_M; j++)
             g[i][j] &= *c_ptr;
@@ -1165,9 +1166,9 @@ int compute_syndrome(const NTSKEM* nts_kem,
         s[j] ^= ff2m->vector_ff_transpose_xor(ff2m, h[i]);
     }
     
-    memset(a, 0, sizeof(a));
-    memset(g, 0, sizeof(g));
-    memset(h, 0, sizeof(h));
+    CT_memset(a, 0, sizeof(a));
+    CT_memset(g, 0, sizeof(g));
+    CT_memset(h, 0, sizeof(h));
 
     return NTS_KEM_SUCCESS;
 }
@@ -1197,7 +1198,7 @@ void correct_error_and_recover_ke(const uint8_t* e_prime,
     
     e_prime_ptr = (packed_t *)e_prime;
     e_ptr = (packed_t *)e;
-    memset(e, 0, NTS_KEM_PARAM_CEIL_N_BYTE);
+    CT_memset(e, 0, NTS_KEM_PARAM_CEIL_N_BYTE);
     for (i=0; i<NTS_KEM_PARAM_A; i++) {
         a = p[i];
         bit_value = bit_value(e_prime_ptr, a);
@@ -1246,7 +1247,7 @@ void random_vector(uint32_t tau, uint32_t n, uint8_t *e)
      * Create a vector with `tau` non-zeros in
      * the last `tau` coordinates
      **/
-    memset(e, 0, (n + 7) >> 3);
+    CT_memset(e, 0, (n + 7) >> 3);
     for (i=0; i<NTS_KEM_PARAM_T >> 3; i++)
         e[(NTS_KEM_PARAM_N>>3)-i-1] = 0xFF;
     
