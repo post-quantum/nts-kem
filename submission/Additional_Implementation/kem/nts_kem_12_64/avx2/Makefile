@@ -34,7 +34,7 @@ DEPS = $(patsubst %,$(INCLUDEDIR)/%,$(_DEPS))
 
 _OBJS = bit-slice/bitslice_bma_128.o bit-slice/bitslice_fft_256.o bit-slice/vector_utils.o \
 		ff.o keccak.o kem.o m4r.o matrix_ff2.o nts_kem.o polynomial.o random.o utils.o \
-		nist/aes_drbg.o 
+		mem.o nist/aes_drbg.o 
 OBJS = $(patsubst %,$(_ODIR)/%,$(_OBJS))
 OBJSKAT = $(patsubst %,$(_ODIRKAT)/%,$(_OBJS))
 
