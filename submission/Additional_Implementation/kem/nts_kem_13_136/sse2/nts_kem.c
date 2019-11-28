@@ -578,7 +578,7 @@ int nts_kem_decapsulate(const uint8_t *sk,
     }
 #if defined(BENCHMARK)
     end_clock = cpucycles();
-    fprintf(stdout, "# Decap : (4) re-encapsulation and verification consumes %" PRId64 " cycles\n",
+    fprintf(stdout, "# Decap : (4) re-encapsulation_and_verification consumes %" PRId64 " cycles\n",
             end_clock-start_clock);
 #endif
 decapsulation_failure:
