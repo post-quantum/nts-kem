@@ -28,6 +28,16 @@
 #include "bitslice_bma_64.h"
 #include "bitslice_fft_64.h"
 
+typedef struct {
+    uint32_t m;
+    FF2m *ff2m;
+    ff_unit a[ NTS_KEM_PARAM_BC ];
+    ff_unit h[ NTS_KEM_PARAM_BC ];
+    ff_unit p[ NTS_KEM_PARAM_N ];
+    uint8_t z[ NTS_KEM_KEY_SIZE ];
+    uint8_t pk[ NTS_KEM_PUBLIC_KEY_SIZE ];
+} NTSKEM_private;
+
 static const int kNTSKEMKeysize = NTS_KEM_KEY_SIZE;
 
 #define NTS_KEM_PARAM_A_REM     (((NTS_KEM_PARAM_A - (NTS_KEM_KEY_SIZE << 3)) & MOD) >> 3)
@@ -40,16 +50,6 @@ static const int kNTSKEMKeysize = NTS_KEM_KEY_SIZE;
 #define bitslice_fft    bitslice_fft12_64
 #define vector_ff_or    vector_ff_or_64
 
-typedef struct {
-    uint32_t m;
-    FF2m *ff2m;
-    ff_unit a[ NTS_KEM_PARAM_BC ];
-    ff_unit h[ NTS_KEM_PARAM_BC ];
-    ff_unit p[ NTS_KEM_PARAM_N ];
-    uint8_t z[ NTS_KEM_KEY_SIZE ];
-    uint8_t pk[ NTS_KEM_PUBLIC_KEY_SIZE ];
-} NTSKEM_private;
-
 /* Function definitions */
 poly* create_random_goppa_polynomial(const FF2m* ff2m, int degree);
 matrix_ff2* create_matrix_G(const NTSKEM* nts_kem,
@@ -59,7 +59,6 @@ matrix_ff2* create_matrix_G(const NTSKEM* nts_kem,
 void fisher_yates_shuffle(ff_unit *buffer);
 int encapsulate(const uint8_t *e,
                 const uint8_t *pk,
-                size_t pk_size,
                 uint8_t *c_ast,
                 uint8_t *k_r);
 void random_vector(uint32_t tau, uint32_t n, uint8_t *e);
@@ -316,14 +315,12 @@ int nts_kem_ciphertext_size(const NTSKEM *nts_kem)
  *  NTS-KEM encapsulation
  *
  *  @param[in]  pk      The pointer to NTS-KEM public key
- *  @param[in]  pk_size The size of the public key in bytes
  *  @param[out] c_ast   The pointer to the NTS-KEM ciphertext
  *  @param[out] k_r     The pointer to the encapsulated key
  *  @return NTS_KEM_SUCCESS on success, otherwise a negative error code
  *          {@see nts_kem_errors.h}
  **/
 int nts_kem_encapsulate(const uint8_t *pk,
-                        size_t pk_size,
                         uint8_t *c_ast,
                         uint8_t *k_r)
 {
@@ -348,7 +345,7 @@ int nts_kem_encapsulate(const uint8_t *pk,
     /**
      * Steps 3-6 are in encapsulate() method
      **/
-    status = encapsulate(e, pk, pk_size, c_ast, k_r);
+    status = encapsulate(e, pk, c_ast, k_r);
     
     CT_memset(e, 0, NTS_KEM_PARAM_CEIL_N_BYTE);
     
@@ -359,14 +356,12 @@ int nts_kem_encapsulate(const uint8_t *pk,
  *  NTS-KEM decapsulation
  *
  *  @param[in]  sk      The pointer to NTS-KEM private key
- *  @param[in]  sk_size The size of the private key in bytes
  *  @param[in]  c_ast   The pointer to the NTS-KEM ciphertext
  *  @param[out] k_r     The pointer to the encapsulated key
  *  @return NTS_KEM_SUCCESS on success, otherwise a negative error code
  *          {@see nts_kem_errors.h}
  **/
 int nts_kem_decapsulate(const uint8_t *sk,
-                        size_t sk_size,
                         const uint8_t *c_ast,
                         uint8_t *k_r)
 {
@@ -402,7 +397,7 @@ int nts_kem_decapsulate(const uint8_t *sk,
     /**
      * Construct an NTS object from private key
      **/
-    if (NTS_KEM_SUCCESS != nts_kem_init_from_private_key(&nts_kem, sk, sk_size))
+    if (NTS_KEM_SUCCESS != nts_kem_init_from_private_key(&nts_kem, sk, NTS_KEM_PRIVATE_KEY_SIZE))
         goto decapsulation_failure;
     
     priv = nts_kem->priv;
@@ -483,7 +478,7 @@ int nts_kem_decapsulate(const uint8_t *sk,
     /**
      * Step 4. Encapsulate(pk, e) to produce (c', k_r)
      **/
-    encapsulate(e, priv->pk, NTS_KEM_PUBLIC_KEY_SIZE, c_prime, kr_a);
+    encapsulate(e, priv->pk, c_prime, kr_a);
     /**
      * Verify that c' = c* and wt(e) = τ
      **/
@@ -1014,7 +1009,6 @@ void fisher_yates_shuffle(ff_unit *buffer)
  *
  *  @param[in]  e       The pointer to input error pattern
  *  @param[in]  pk      The pointer to NTS-KEM public key
- *  @param[in]  pk_size The size of the public key in bytes
  *  @param[out] c_ast   The pointer to the NTS-KEM ciphertext
  *  @param[out] k_r     The pointer to the encapsulated key
  *  @return NTS_KEM_SUCCESS on success, otherwise a negative error code
@@ -1022,7 +1016,6 @@ void fisher_yates_shuffle(ff_unit *buffer)
  **/
 int encapsulate(const uint8_t *e,
                 const uint8_t *pk,
-                size_t pk_size,
                 uint8_t *c_ast,
                 uint8_t *k_r)
 {
