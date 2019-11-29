@@ -110,8 +110,7 @@ main()
     fprintf(stdout, "#   Step 1(e). The output of multipoint evaluation of sigma with FFT\n");
     fprintf(stdout, "#   Step 1(f). The error vector e_prime\n");
     fprintf(stdout, "#   Step 2. The permuted version of e_prime: vector e\n");
-    fprintf(stdout, "#   Step 3. The vector k_e, recovered from ciphertext and vector e\n");
-    fprintf(stdout, "#   Step 4. Output of SHAKE256(e) and vector k_r\n");
+    fprintf(stdout, "#   Step 3. Re-encapsulate e to produce k_r and return k_r on successful check\n");
     fprintf(stdout, "# Note that all random bytes are obtained using AES_CTR_DRBG (SP800-90A section 10.2.1.5.1),\n");
     fprintf(stdout, "# initialised by the per-run 'seed' value as indicated below.\n#\n");
 #endif

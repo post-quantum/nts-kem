@@ -346,9 +346,6 @@ int nts_kem_encapsulate(const uint8_t *pk,
 {
     int status = NTS_KEM_BAD_MEMORY_ALLOCATION;
     uint8_t e[NTS_KEM_PARAM_CEIL_N_BYTE];
-#if INTERMEDIATE_VALUES > 1
-    uint8_t m[NTS_KEM_PARAM_CEIL_K_BYTE] = {0};
-#endif
 
     /* Extract information from public-key */
     
