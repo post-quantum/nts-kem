@@ -13,7 +13,7 @@ NTS-KEM team (in alphabetical order):
 -------------------------------------
 - Martin Albrecht, martin.albrecht@rhul.ac.uk
 - Carlos Cid, carlos.cid@rhul.ac.uk
-- Kenneth G. Paterson, kenny.paterson@rhul.ac.uk
+- Kenneth G. Paterson, kenny.paterson@inf.ethz.ch
 - Cen Jung Tjhai, cjt@post-quantum.com
 - Martin Tomlinson, mt@post-quantum.com
 
@@ -170,6 +170,8 @@ Optimized_Implementation:
         polynomial.h - part of 64-bit optimized implementation
         random.c - part of 64-bit optimized implementation
         random.h - part of 64-bit optimized implementation
+        mem.c - part of 64-bit optimized implementation
+        mem.h - part of 64-bit optimized implementation
         test/main.c - test code for this parameter
         test/ntskem_test.c - test code for this parameter
         test/ntskem_test.h - test code for this parameter
@@ -208,6 +210,8 @@ Optimized_Implementation:
         polynomial.h - part of 64-bit optimized implementation
         random.c - part of 64-bit optimized implementation
         random.h - part of 64-bit optimized implementation
+        mem.c - part of 64-bit optimized implementation
+        mem.h - part of 64-bit optimized implementation
         test/main.c - test code for this parameter
         test/ntskem_test.c - test code for this parameter
         test/ntskem_test.h - test code for this parameter
@@ -246,6 +250,8 @@ Optimized_Implementation:
         polynomial.h - part of 64-bit optimized implementation
         random.c - part of 64-bit optimized implementation
         random.h - part of 64-bit optimized implementation
+        mem.c - part of 64-bit optimized implementation
+        mem.h - part of 64-bit optimized implementation
         test/main.c - test code for this parameter
         test/ntskem_test.c - test code for this parameter
         test/ntskem_test.h - test code for this parameter
@@ -291,6 +297,8 @@ Additional_Implementation:
         test/ntskem_test.h - test code for this parameter
         utils.c - part of AVX2 optimized implementation
         utils.h - part of AVX2 optimized implementation
+        mem.c - part of AVX2 optimized implementation
+        mem.h - part of AVX2 optimized implementation
 
     kem/nts_kem_12_64/sse2 - the SSE2/SSE4.1 optimized ANSI C implementation of of NTS-KEM(12, 64)
 	LICENSE - the content of the MIT license
@@ -332,6 +340,8 @@ Additional_Implementation:
         test/ntskem_test.h - test code for this parameter
         utils.c - part of SSE2/SSE4.1 optimized implementation
         utils.h - part of SSE2/SSE4.1 optimized implementation
+        mem.c - part of AVX2 optimized implementation
+        mem.h - part of AVX2 optimized implementation
 
     kem/nts_kem_13_80/avx2 - the AVX2 optimized ANSI C implementation of of NTS-KEM(13, 80)
 	LICENSE - the content of the MIT license
@@ -372,6 +382,8 @@ Additional_Implementation:
         test/ntskem_test.h - test code for this parameter
         utils.c - part of AVX2 optimized implementation
         utils.h - part of AVX2 optimized implementation
+        mem.c - part of AVX2 optimized implementation
+        mem.h - part of AVX2 optimized implementation
 
     kem/nts_kem_13_80/sse2 - the SSE2/SSE4.1 optimized ANSI C implementation of of NTS-KEM(13, 80)
 	LICENSE - the content of the MIT license
@@ -412,6 +424,8 @@ Additional_Implementation:
         test/ntskem_test.h - test code for this parameter
         utils.c - part of SSE2/SSE4.1 optimized implementation
         utils.h - part of SSE2/SSE4.1 optimized implementation
+        mem.c - part of SSE2/SSE4.1 optimized implementation
+        mem.h - part of SSE2/SSE4.1 optimized implementation
 
     kem/nts_kem_13_136/avx2 - the AVX2 optimized ANSI C implementation of of NTS-KEM(13, 136)
 	LICENSE - the content of the MIT license
@@ -452,6 +466,8 @@ Additional_Implementation:
         test/ntskem_test.h - test code for this parameter
         utils.c - part of AVX2 optimized implementation
         utils.h - part of AVX2 optimized implementation
+        mem.c - part of AVX2 optimized implementation
+        mem.h - part of AVX2 optimized implementation
 
     kem/nts_kem_13_136/sse2 - the SSE2/SSE4.1 optimized ANSI C implementation of of NTS-KEM(13, 136)
 	LICENSE - the content of the MIT license
@@ -492,22 +508,24 @@ Additional_Implementation:
         test/ntskem_test.h - test code for this parameter
         utils.c - part of SSE2/SSE4.1 optimized implementation
         utils.h - part of SSE2/SSE4.1 optimized implementation
+        mem.c - part of SSE2/SSE4.1 optimized implementation
+        mem.h - part of SSE2/SSE4.1 optimized implementation
 
 KAT:
     generate-kats.sh - a Bash script to generate the KATs and intermediate values
 
     kem/nts_kem_12_64:
-        PQCkemKAT_9248.req - KAT request file of NTS-KEM(12, 64)
-        PQCkemKAT_9248.rsp - KAT response file of NTS-KEM(12, 64)
-        PQCkemKAT_9248.intval - Intermediate values from NTS-KEM(12, 64) reference implementation
+        PQCkemKAT_328736.req - KAT request file of NTS-KEM(12, 64)
+        PQCkemKAT_328736.rsp - KAT response file of NTS-KEM(12, 64)
+        PQCkemKAT_328736.intval - Intermediate values from NTS-KEM(12, 64) reference implementation
 
     kem/nts_kem_13_80:
-        PQCkemKAT_17556.req - KAT request file of NTS-KEM(13, 80)
-        PQCkemKAT_17556.rsp - KAT response file of NTS-KEM(13, 80)  
-        PQCkemKAT_17556.intval - Intermediate values from NTS-KEM(13, 80) reference implementation
+        PQCkemKAT_947316.req - KAT request file of NTS-KEM(13, 80)
+        PQCkemKAT_947316.rsp - KAT response file of NTS-KEM(13, 80)  
+        PQCkemKAT_947316.intval - Intermediate values from NTS-KEM(13, 80) reference implementation
 
     kem/nts_kem_13_136:
-        PQCkemKAT_19922.req - KAT request file of NTS-KEM(13, 136)
-        PQCkemKAT_19922.rsp - KAT response file of NTS-KEM(13, 136)
-        PQCkemKAT_19922.intval - Intermediate values from NTS-KEM(13, 136) reference implementation
+        PQCkemKAT_1439626.req - KAT request file of NTS-KEM(13, 136)
+        PQCkemKAT_1439626.rsp - KAT response file of NTS-KEM(13, 136)
+        PQCkemKAT_1439626.intval - Intermediate values from NTS-KEM(13, 136) reference implementation
 

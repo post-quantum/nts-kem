@@ -15,19 +15,19 @@ command -v $NTSKEM13136INTVAL > /dev/null 2>&1 || { echo >&2 "$NTSKEM13136INTVAL
 # Generating KATs for NTS-KEM(12,64)
 echo "Generating KATs for NTS-KEM(12,64). Please note that this will take a few minutes to complete.";
 cd kem/nts_kem_12_64
-../../$NTSKEM1264INTVAL > PQCkemKAT_9248.intval
+../../$NTSKEM1264INTVAL > PQCkemKAT_328736.intval
 cd ../../
 
 # Generating KATs for NTS-KEM(13,80)
 echo "Generating KATs for NTS-KEM(13,80). Please note that this will also take a few minutes to complete.";
 cd kem/nts_kem_13_80
-../../$NTSKEM1380INTVAL > PQCkemKAT_17556.intval
+../../$NTSKEM1380INTVAL > PQCkemKAT_947316.intval
 cd ../../
 
 #kem/:
 # Generating KATs for NTS-KEM(13,136)
 echo "Generating KATs for NTS-KEM(13,136). Please note that this will take longer than the two above to complete.";
 cd kem/nts_kem_13_136
-../../$NTSKEM13136INTVAL > PQCkemKAT_19922.intval
+../../$NTSKEM13136INTVAL > PQCkemKAT_1439626.intval
 cd ../../
 
