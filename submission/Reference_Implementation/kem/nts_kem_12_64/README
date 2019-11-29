@@ -69,7 +69,7 @@ Key-generation:
 
 Encapsulation:
    Step 1-2. Randomly error vector e.
-   Step 3. The vector k_e = SHAKE256(e)
+   Step 3. The vector k_e = SHA3_256(e)
    Step 4. The message vector m
    Step 5. The two parts of the ciphertext: c_b and c_c
    Step 6. The vector k_r
@@ -80,8 +80,7 @@ Decapsulation:
    Step 1(e). The output of multipoint evaluation of sigma with FFT
    Step 1(f). The error vector e_prime
    Step 2. The permuted version of e_prime: vector e
-   Step 3. The vector k_e, recovered from ciphertext and vector e
-   Step 4. Output of SHAKE256(e) and vector k_r
+   Step 3. Re-encapsulate e with public-key Q to produce (k_r, c')
 
 Note that all random bytes are obtained using AES_CTR_DRBG (SP800-90A section 
 10.2.1.5.1), initialised by the per-run 'seed' value.

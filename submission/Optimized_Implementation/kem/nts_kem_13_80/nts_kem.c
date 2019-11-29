@@ -469,14 +469,13 @@ int nts_kem_decapsulate(const uint8_t *sk,
 
     /**
      * Step 2. Permute e_prime with permutation p to obtain e
-     * Step 3. Consider e = (e_a | e_b | e_c)
      *
      * A countermeasure is added to prevent potential cache timing attack
      **/
     permute_error(e_prime, priv->p, e);
     
     /**
-     * Step 4. Encapsulate(pk, e) to produce (c', k_r)
+     * Step 3. Encapsulate(pk, e) to produce (c', k_r)
      **/
     encapsulate(e, priv->pk, c_prime, kr_a);
     /**
@@ -488,8 +487,8 @@ int nts_kem_decapsulate(const uint8_t *sk,
     mux_selector = CT_is_equal_zero(checksum) && CT_is_equal(error_weight, NTS_KEM_PARAM_T);
     status = CT_mux((uint32_t)mux_selector, NTS_KEM_SUCCESS, NTS_KEM_INVALID_CIPHERTEXT);
     /**
-     * If yes, return k_r; otherwise return SHA3_256(z | c')
-     * where z is part of the private-key and c' = (1_a | c_b | c_c)
+     * If yes, return k_r; otherwise return SHA3_256(z | c)
+     * where z is part of the private-key and c = (1_a | c_b | c_c)
      **/
     memcpy(digest_buf, priv->z, NTS_KEM_KEY_SIZE);
     memcpy(&digest_buf[NTS_KEM_KEY_SIZE], c_buf, NTS_KEM_PARAM_CEIL_N_BYTE);
