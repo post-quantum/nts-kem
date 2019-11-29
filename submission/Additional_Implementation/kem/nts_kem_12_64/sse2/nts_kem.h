@@ -76,12 +76,14 @@ int nts_kem_ciphertext_size(const NTSKEM *nts_kem);
  *  NTS-KEM encapsulation
  *
  *  @param[in]  pk      The pointer to NTS-KEM public key
+ *  @param[in]  pk_size The size of the public key in bytes
  *  @param[out] c_ast   The pointer to the NTS-KEM ciphertext
  *  @param[out] k_r     The pointer to the encapsulated key
  *  @return NTS_KEM_SUCCESS on success, otherwise a negative error code
  *          {@see nts_kem_errors.h}
  **/
 int nts_kem_encapsulate(const uint8_t *pk,
+                        size_t pk_size,
                         uint8_t *c_ast,
                         uint8_t *k_r);
 
@@ -89,12 +91,14 @@ int nts_kem_encapsulate(const uint8_t *pk,
  *  NTS-KEM decapsulation
  *
  *  @param[in]  sk      The pointer to NTS-KEM private key
+ *  @param[in]  sk_size The size of the private key in bytes
  *  @param[in]  c_ast   The pointer to the NTS-KEM ciphertext
  *  @param[out] k_r     The pointer to the encapsulated key
  *  @return NTS_KEM_SUCCESS on success, otherwise a negative error code
  *          {@see nts_kem_errors.h}
  **/
 int nts_kem_decapsulate(const uint8_t *sk,
+                        size_t sk_size,
                         const uint8_t *c_ast,
                         uint8_t *k_r);
 

@@ -36,12 +36,12 @@ int crypto_kem_enc(unsigned char *ct,
                    unsigned char *ss,
                    const unsigned char *pk)
 {
-    return nts_kem_encapsulate(pk, ct, ss);
+    return nts_kem_encapsulate(pk, CRYPTO_PUBLICKEYBYTES, ct, ss);
 }
 
 int crypto_kem_dec(unsigned char *ss,
                    const unsigned char *ct,
                    const unsigned char *sk)
 {
-    return nts_kem_decapsulate(sk, ct, ss);
+    return nts_kem_decapsulate(sk, CRYPTO_SECRETKEYBYTES, ct, ss);
 }

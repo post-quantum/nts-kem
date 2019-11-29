@@ -31,7 +31,6 @@ typedef struct {
     ff_unit h[ NTS_KEM_PARAM_BC ];
     ff_unit p[ NTS_KEM_PARAM_N ];
     uint8_t z[ NTS_KEM_KEY_SIZE ];
-    uint8_t pk[ NTS_KEM_PUBLIC_KEY_SIZE ];
 } NTSKEM_private;
 
 static const int kNTSKEMKeysize = NTS_KEM_KEY_SIZE;
@@ -45,19 +44,18 @@ matrix_ff2* create_matrix_G(const NTSKEM* nts_kem,
                             ff_unit *a,
                             ff_unit *h);
 void fisher_yates_shuffle(ff_unit *buffer);
-int encapsulate(const uint8_t *e,
-                const uint8_t *pk,
-                uint8_t *c_ast,
-                uint8_t *k_r);
 void random_vector(uint32_t tau, uint32_t n, uint8_t *e);
 int compute_syndrome(const NTSKEM* nts_kem,
                      const uint8_t *c_ast,
                      ff_unit* s);
-void permute_error(const uint8_t* e_prime, const ff_unit* p, uint8_t *e);
+void correct_error_and_recover_ke(const uint8_t* e_prime,
+                                  const ff_unit* p,
+                                  uint8_t *e,
+                                  uint8_t *k_e);
 void pack_buffer(const uint8_t *src, int src_len, uint8_t *dst);
 void unpack_buffer(const uint8_t *src, ff_unit *dst, int dst_len);
 int serialise_public_key(NTSKEM* nts_kem, const matrix_ff2* SGP);
-int serialise_private_key(NTSKEM *nts_kem, const matrix_ff2* Q);
+int serialise_private_key(NTSKEM *nts_kem);
 int deserialise_private_key(NTSKEM* nts_kem, const uint8_t *buf);
 #if defined(INTERMEDIATE_VALUES)
 void fprintf_ffunit_vec(FILE* fp,
@@ -188,7 +186,7 @@ int nts_kem_create(NTSKEM** nts_kem)
      * Serialise the public and private key pair
      **/
     if ((NTS_KEM_SUCCESS != serialise_public_key(nts_kem_ptr, Q)) ||
-        (NTS_KEM_SUCCESS != serialise_private_key(nts_kem_ptr, Q)))
+        (NTS_KEM_SUCCESS != serialise_private_key(nts_kem_ptr)))
         goto nts_kem_create_fail;
     
     status = NTS_KEM_SUCCESS;
@@ -335,23 +333,43 @@ int nts_kem_ciphertext_size(const NTSKEM *nts_kem)
  *  NTS-KEM encapsulation
  *
  *  @param[in]  pk      The pointer to NTS-KEM public key
+ *  @param[in]  pk_size The size of the public key in bytes
  *  @param[out] c_ast   The pointer to the NTS-KEM ciphertext
  *  @param[out] k_r     The pointer to the encapsulated key
  *  @return NTS_KEM_SUCCESS on success, otherwise a negative error code
  *          {@see nts_kem_errors.h}
  **/
 int nts_kem_encapsulate(const uint8_t *pk,
+                        size_t pk_size,
                         uint8_t *c_ast,
                         uint8_t *k_r)
 {
     int status = NTS_KEM_BAD_MEMORY_ALLOCATION;
-    uint8_t e[NTS_KEM_PARAM_CEIL_N_BYTE];
+    int32_t i, j, l;
+	packed_t v;
+    const uint8_t *pk_ptr = pk;
+	uint64_t c_c[NTS_KEM_PARAM_R_DIV_64];
+	uint64_t Q[NTS_KEM_PARAM_K][NTS_KEM_PARAM_R_DIV_64];
+    uint8_t kr_in_buf[kNTSKEMKeysize + NTS_KEM_PARAM_CEIL_N_BYTE];
+    uint8_t k_e[kNTSKEMKeysize], e[NTS_KEM_PARAM_CEIL_N_BYTE];
+#if INTERMEDIATE_VALUES > 1
+    uint8_t m[NTS_KEM_PARAM_CEIL_K_BYTE] = {0};
+#endif
 
     /* Extract information from public-key */
     
     if (kNTSKEMKeysize > (NTS_KEM_PARAM_K >> 3)) {
         return NTS_KEM_BAD_KEY_LENGTH;
     }
+    
+    /**
+     * Populate the generator matrix, but only the parity section
+     **/
+	for (i=0; i<NTS_KEM_PARAM_K; i++) {
+		Q[i][NTS_KEM_PARAM_R_DIV_64-1] = 0x0ULL;
+		memcpy(Q[i], pk_ptr, NTS_KEM_PARAM_CEIL_R_BYTE);
+		pk_ptr += NTS_KEM_PARAM_CEIL_R_BYTE;
+	}
     
     /**
      * NTS-KEM Encapsulation procudure
@@ -368,24 +386,135 @@ int nts_kem_encapsulate(const uint8_t *pk,
 #endif
     
     /**
-     * Steps 3-6 are in encapsulate() method
+     * Step 3. Compute SHA3_256(e) to produce k_e
      **/
-    status = encapsulate(e, pk, c_ast, k_r);
+    sha3_256(e, NTS_KEM_PARAM_CEIL_N_BYTE, k_e);
+
+#if defined(INTERMEDIATE_VALUES)
+    fprintf(stdout, "# Encap Step 3. k_e = SHA3_256(e)\n");
+    fprintf_uint8_vec(stdout, "k_e = ", k_e, kNTSKEMKeysize, "\n");
+#endif
+
+#if INTERMEDIATE_VALUES > 1
+    fprintf(stdout, "# Encap Step 4. Message vector m\n");
+	memcpy(m, e, (NTS_KEM_PARAM_A >> 3));
+	memcpy(&m[NTS_KEM_PARAM_A >> 3], k_e, kNTSKEMKeysize);
+    fprintf_uint8_vec(stdout, "m = ", m, NTS_KEM_PARAM_CEIL_K_BYTE, "\n");
+#endif
     
+    /**
+     * Step 4. Construct a length k message vector m = (e_a | k_e)
+     * Step 5. Perform systematic encoding with matrix Q, 
+     *         i.e. c = ( m | mQ ) + e
+     *                = ( c_a | c_b | c_c )
+     *                = ( 0_a | c_b | c_c )
+     *          c_ast = ( c_b | c_c )
+     *
+     * The c_c (or parity block) is basically section c of the
+     * ciphertext. It's basically c_c = (e_a | k_e)*Q where Q
+     * is the last n-k bits of the generator matrix in reduced
+     * echelon form G = [ I | Q ].
+     */
+	memset(c_c, 0, sizeof(c_c));
+	for (i=0; i<NTS_KEM_PARAM_A >> LOG2; i++) {
+		memcpy(&v, &e[i*sizeof(v)], sizeof(v));
+		while (v) {
+			l  = (int32_t)lowest_bit_idx(v);
+			v ^= (ONE << l);
+			l += (BITSIZE*i);
+			for (j=0; j<NTS_KEM_PARAM_R_DIV_64; j++) {
+				c_c[j] ^= Q[l][j];
+			}
+		}
+	}
+	v = 0x0ULL;
+	memcpy(&v, &e[i*sizeof(v)], NTS_KEM_PARAM_A_REM);
+	while (v) {
+		l  = (int32_t)lowest_bit_idx(v);
+		v ^= (ONE << l);
+		l += (BITSIZE*i);
+		for (j=0; j<NTS_KEM_PARAM_R_DIV_64; j++) {
+			c_c[j] ^= Q[l][j];
+		}
+	}
+	for (i=0; i<NTS_KEM_PARAM_B >> LOG2; i++) {
+		memcpy(&v, &k_e[i*sizeof(v)], sizeof(v));
+		while (v) {
+			l  = (int32_t)lowest_bit_idx(v);
+			v ^= (ONE << l);
+			l += (BITSIZE*i) + NTS_KEM_PARAM_A;
+			for (j=0; j<NTS_KEM_PARAM_R_DIV_64; j++) {
+				c_c[j] ^= Q[l][j];
+			}
+		}
+	}
+    
+    /**
+     * The output is ciphertext containing the following section:
+     *
+     *     c = ( c_a | c_b | c_c )
+     *
+     * By construction, c_b = k_e and its length is kNTSKEMKeysize bytes, 
+     * the length of c_a is (k/8 - kNTSKEMKeysize) bytes and the length of
+     * c_c is (n-k)/8 bytes.
+     *
+     * The error pattern e = ( e_a | e_b | e_c ), therefore, after
+     * adding e to c, c_a = 0, and we have
+     *
+     *     c_ast = ( k_e + e_b | c_c + e_c )
+     **/
+    memcpy(c_ast, k_e, kNTSKEMKeysize);         					/* k_e */
+    memcpy(&c_ast[kNTSKEMKeysize], c_c, NTS_KEM_PARAM_CEIL_R_BYTE); /* c_c */
+    
+    /**
+     * Perturb the NTS ciphertext with error pattern in section b and c.
+     *
+     * There is no need to perturb section a as we know it will result
+     * to 0 and we are going to drop this section anyway.
+     */
+    for (i=0; i<NTS_KEM_CIPHERTEXT_SIZE; i++) {
+        c_ast[i] ^= e[(NTS_KEM_PARAM_A>>3) + i];    /* c_b = k_e + e_b, c_c = c_c + e_c */
+    }
+    
+#if defined(INTERMEDIATE_VALUES)
+    fprintf(stdout, "# Encap Step 5. Systematic encoding with Q\n");
+    fprintf_uint8_vec(stdout, "c_b = ", c_ast, NTS_KEM_KEY_SIZE, "\n");
+    fprintf_uint8_vec(stdout, "c_c = ", &c_ast[NTS_KEM_KEY_SIZE], NTS_KEM_PARAM_CEIL_R_BYTE, "\n");
+#endif
+    
+    /**
+     * Step 6. Output the pair (k_r, c_ast) where k_r = SHA3_256(k_e | e)
+     *
+     * Construct (k_e | e) and obtain k_r = SHA3_256(k_e | e)
+     **/
+    memcpy(kr_in_buf, k_e, kNTSKEMKeysize);
+    memcpy(&kr_in_buf[kNTSKEMKeysize], e, NTS_KEM_PARAM_CEIL_N_BYTE);
+    sha3_256(kr_in_buf, kNTSKEMKeysize + NTS_KEM_PARAM_CEIL_N_BYTE, k_r);
+
+#if defined(INTERMEDIATE_VALUES)
+    fprintf(stdout, "# Encap Step 6. Output the pair (k_r, c* = (c_b | c_c))\n");
+    fprintf_uint8_vec(stdout, "k_r = ", k_r, NTS_KEM_KEY_SIZE, "\n");
+#endif
+
+    status = NTS_KEM_SUCCESS;
     memset(e, 0, NTS_KEM_PARAM_CEIL_N_BYTE);
+    memset(kr_in_buf, 0, kNTSKEMKeysize + NTS_KEM_PARAM_CEIL_N_BYTE);
     
-    return status;}
+    return status;
+}
 
 /**
  *  NTS-KEM decapsulation
  *
  *  @param[in]  sk      The pointer to NTS-KEM private key
+ *  @param[in]  sk_size The size of the private key in bytes
  *  @param[in]  c_ast   The pointer to the NTS-KEM ciphertext
  *  @param[out] k_r     The pointer to the encapsulated key
  *  @return NTS_KEM_SUCCESS on success, otherwise a negative error code
  *          {@see nts_kem_errors.h}
  **/
 int nts_kem_decapsulate(const uint8_t *sk,
+                        size_t sk_size,
                         const uint8_t *c_ast,
                         uint8_t *k_r)
 {
@@ -398,12 +527,10 @@ int nts_kem_decapsulate(const uint8_t *sk,
     poly *sigma_x = NULL;
     ff_unit syndromes[2*NTS_KEM_PARAM_T];
     uint8_t e[NTS_KEM_PARAM_CEIL_N_BYTE], e_prime[NTS_KEM_PARAM_CEIL_N_BYTE];
-    uint8_t kr_a[kNTSKEMKeysize];
-    uint8_t kr_b[kNTSKEMKeysize];
+    uint8_t kr_in_buf[kNTSKEMKeysize + NTS_KEM_PARAM_CEIL_N_BYTE];
     size_t roots_size = 0;
     uint8_t digest_buf[kNTSKEMKeysize + NTS_KEM_PARAM_CEIL_N_BYTE];
     uint8_t c_buf[NTS_KEM_PARAM_CEIL_N_BYTE];
-    uint8_t c_prime[NTS_KEM_CIPHERTEXT_SIZE];
     uint64_t mux_selector;
     uint64_t *out_ptr = NULL;
     const uint64_t *in_left_ptr = NULL;
@@ -418,7 +545,7 @@ int nts_kem_decapsulate(const uint8_t *sk,
     /**
      * Construct an NTS object from private key
      **/
-    if (NTS_KEM_SUCCESS != nts_kem_init_from_private_key(&nts_kem, sk, NTS_KEM_PRIVATE_KEY_SIZE))
+    if (NTS_KEM_SUCCESS != nts_kem_init_from_private_key(&nts_kem, sk, sk_size))
         goto decapsulation_failure;
     
     priv = nts_kem->priv;
@@ -513,56 +640,77 @@ int nts_kem_decapsulate(const uint8_t *sk,
 
     /**
      * Step 2. Permute e_prime with permutation p to obtain e
+     * Step 3. Consider e = (e_a | e_b | e_c), recover k_e = c_b - e_b
      **/
-    permute_error(e_prime, priv->p, e);
+    correct_error_and_recover_ke(e_prime, priv->p, e, (uint8_t*)c_ast);
     
+#if defined(INTERMEDIATE_VALUES)
+    fprintf(stdout, "# Decap Step 2. Permute vector e_prime to obtain e\n");
+    fprintf_uint8_vec(stdout, "e = ", e, NTS_KEM_PARAM_CEIL_N_BYTE, "\n");
+    fprintf(stdout, "# Decap Step 3. Recover k_e\n");
+    fprintf_uint8_vec(stdout, "k_e = ", c_ast, NTS_KEM_KEY_SIZE, "\n");
+#endif
+    
+    /**
+     * Step 4. Return k_r whereby if k_e == SHA3_256(e) and wt(e) = τ,
+     *         k_r = SHA3_256(k_e | e) otherwise k_r = SHA3_256(z | c')
+     *         where z is part of the private-key and c' = (1_a | c_b | c_c)
+     *
+     * Obtain k_e from the error pattern, k_e = SHA3_256(e)
+     **/
+    sha3_256((const uint8_t *)e, NTS_KEM_PARAM_CEIL_N_BYTE, kr_in_buf);
+#if defined(INTERMEDIATE_VALUES)
+    fprintf(stdout, "# Decap Step 4. SHA3_256(e)\n");
+    fprintf_uint8_vec(stdout, "SHA3_256_e = ", kr_in_buf, NTS_KEM_KEY_SIZE, "\n");
+#endif
+    /**
+     * Construct (k_e | e)
+     **/
+    memcpy(&kr_in_buf[kNTSKEMKeysize], e, NTS_KEM_PARAM_CEIL_N_BYTE);
+    /**
+     * Verify the equality of k_e and SHA3_256(e)
+     **/
+    for (checksum=0,i=0; i<kNTSKEMKeysize; i++) {
+        checksum += (c_ast[i] ^ kr_in_buf[i]);
+    }
+    /**
+     * Weight check
+     **/
     e_ptr = (const uint64_t *)e;
     for (error_weight=0,i=0; i<NTS_KEM_PARAM_N >> LOG2; i++) {
         error_weight += popcount(*e_ptr++);
     }
-
-#if defined(INTERMEDIATE_VALUES)
-    fprintf(stdout, "# Decap Step 2. Permute vector e_prime to obtain e\n");
-    fprintf_uint8_vec(stdout, "e = ", e, NTS_KEM_PARAM_CEIL_N_BYTE, "\n");
-#endif
-    
-    /**
-     * Step 3. Encapsulate(pk, e) to produce (c', k_r)
-     **/
-    encapsulate(e, priv->pk, c_prime, kr_a);
-    /**
-     * Verify that c' = c* and wt(e) = τ
-     **/
-    for (checksum=0,i=0; i<NTS_KEM_CIPHERTEXT_SIZE; i++) {
-        checksum += (c_prime[i] ^ c_ast[i]);
-    }
     mux_selector = CT_is_equal_zero(checksum) && CT_is_equal(error_weight, NTS_KEM_PARAM_T);
     status = CT_mux((uint32_t)mux_selector, NTS_KEM_SUCCESS, NTS_KEM_INVALID_CIPHERTEXT);
-    /**
-     * If yes, return k_r; otherwise return SHA3_256(z | c)
-     * where z is part of the private-key and c = (1_a | c_b | c_c)
-     **/
-    memcpy(digest_buf, priv->z, NTS_KEM_KEY_SIZE);
-    memcpy(&digest_buf[NTS_KEM_KEY_SIZE], c_buf, NTS_KEM_PARAM_CEIL_N_BYTE);
-    sha3_256(digest_buf, NTS_KEM_KEY_SIZE + NTS_KEM_PARAM_CEIL_N_BYTE, kr_b);
     
-    out_ptr = (uint64_t *)k_r;
-    in_left_ptr  = (const uint64_t *)kr_a;
-    in_right_ptr = (const uint64_t *)kr_b;
+    /**
+     * Prepare input buffer for final SHA3_256 digest operation
+     **/
+    out_ptr = (uint64_t *)digest_buf;
+    in_left_ptr = (const uint64_t *)kr_in_buf;
+    in_right_ptr = (const uint64_t *)priv->z;
     for (i=0; i<kNTSKEMKeysize/sizeof(uint64_t); i++) {
         *out_ptr++ = CT_mux64(mux_selector, *in_left_ptr++, *in_right_ptr++);
     }
-
+    in_left_ptr = (const uint64_t *)e;
+    in_right_ptr = (const uint64_t *)c_buf;
+    for (i=0; i<NTS_KEM_PARAM_CEIL_N_BYTE/sizeof(uint64_t); i++) {
+        *out_ptr++ = CT_mux64(mux_selector, *in_left_ptr++, *in_right_ptr++);
+    }
+    /**
+     * Obtain k_r, i.e. k_r = SHA3_256(k_e | e) in the case of correct decapsulation,
+     * otherwise obtain k_r = SHA3_256(z | c').
+     **/
+    sha3_256(digest_buf, kNTSKEMKeysize + NTS_KEM_PARAM_CEIL_N_BYTE, k_r);
+    
 #if defined(INTERMEDIATE_VALUES)
     fprintf_uint8_vec(stdout, "k_r = ", k_r, NTS_KEM_KEY_SIZE, "\n");
 #endif
     
 decapsulation_failure:
-    memset(kr_a, 0, kNTSKEMKeysize);
-    memset(kr_b, 0, kNTSKEMKeysize);
+    memset(kr_in_buf, 0, kNTSKEMKeysize + NTS_KEM_PARAM_CEIL_N_BYTE);
     memset(e, 0, NTS_KEM_PARAM_CEIL_N_BYTE);
     memset(e_prime, 0, NTS_KEM_PARAM_CEIL_N_BYTE);
-    memset(c_prime, 0, NTS_KEM_CIPHERTEXT_SIZE);
     if (sigma_x) {
         zero_poly(sigma_x);
         free_poly(sigma_x);
@@ -1039,17 +1187,13 @@ int serialise_public_key(NTSKEM* nts_kem,
  *  Serialise NTS private key
  *
  *  @param[in] nts_kem    The pointer to NTS-KEM object
- *  @param[in] Q          The pointer to matrix Q
  *  @return NTS_KEM_SUCCESS on success, a negative integer otherwise
  **/
-int serialise_private_key(NTSKEM *nts_kem, const matrix_ff2* Q)
+int serialise_private_key(NTSKEM *nts_kem)
 {
-    int i, j, s;
     uint8_t *key_ptr = NULL;
-    packed_t bit_value, *v_ptr = NULL;
     NTSKEM_private* priv = (NTSKEM_private *)nts_kem->priv;
-    const int32_t b = NTS_KEM_PARAM_CEIL_R_BYTE;
-
+    
     nts_kem->private_key_size = NTS_KEM_PRIVATE_KEY_SIZE;
     nts_kem->private_key = (uint8_t *)calloc(nts_kem->private_key_size, sizeof(uint8_t));
     if (!nts_kem->private_key)
@@ -1066,16 +1210,6 @@ int serialise_private_key(NTSKEM *nts_kem, const matrix_ff2* Q)
     key_ptr += (NTS_KEM_PARAM_N * 13/8);
     
     memcpy(key_ptr, priv->z, NTS_KEM_KEY_SIZE);
-    key_ptr += NTS_KEM_KEY_SIZE;
-    
-    for (i=0; i<NTS_KEM_PARAM_K; i++) {
-        v_ptr = (packed_t *)row_ptr_matrix_ff2(Q, i);
-        for (j=0; j<NTS_KEM_PARAM_C; j++) {
-            bit_value = bit_value(v_ptr, j);
-            s = j >> 3;
-            key_ptr[(i * b) + s] |= ((uint8_t)(bit_value << (j - (s << 3))));
-        }
-    }
 
     return NTS_KEM_SUCCESS;
 }
@@ -1099,16 +1233,10 @@ int deserialise_private_key(NTSKEM* nts_kem, const uint8_t *buf)
     unpack_buffer(buf, priv->h, NTS_KEM_PARAM_BC);
     buf += (NTS_KEM_PARAM_BC * 13/8);
     
-    /* Deserialise vector p */
     unpack_buffer(buf, priv->p, NTS_KEM_PARAM_N);
     buf += (NTS_KEM_PARAM_N * 13/8);
     
-    /* Deserialise vector z */
     memcpy(priv->z, buf, NTS_KEM_KEY_SIZE);
-    buf += NTS_KEM_KEY_SIZE;
-    
-    /* Deserialise public-key */
-    memcpy(priv->pk, buf, NTS_KEM_PUBLIC_KEY_SIZE);
 
     return NTS_KEM_SUCCESS;
 }
@@ -1134,159 +1262,6 @@ void fisher_yates_shuffle(ff_unit *buffer)
         buffer[i] = swap;
         --i;
     }
-}
-
-/**
- * Core encapsulation routine
- *
- *  @param[in]  e       The pointer to input error pattern
- *  @param[in]  pk      The pointer to NTS-KEM public key
- *  @param[out] c_ast   The pointer to the NTS-KEM ciphertext
- *  @param[out] k_r     The pointer to the encapsulated key
- *  @return NTS_KEM_SUCCESS on success, otherwise a negative error code
- *          {@see nts_kem_errors.h}
- **/
-int encapsulate(const uint8_t *e,
-                const uint8_t *pk,
-                uint8_t *c_ast,
-                uint8_t *k_r)
-{
-    int status = NTS_KEM_BAD_MEMORY_ALLOCATION;
-    int32_t i, j, l;
-    packed_t v;
-    const uint8_t *pk_ptr = pk;
-    uint64_t c_c[NTS_KEM_PARAM_R_DIV_64];
-    uint64_t Q[NTS_KEM_PARAM_K][NTS_KEM_PARAM_R_DIV_64];
-    uint8_t kr_in_buf[kNTSKEMKeysize + NTS_KEM_PARAM_CEIL_N_BYTE];
-    uint8_t k_e[kNTSKEMKeysize];
-#if INTERMEDIATE_VALUES > 1
-    uint8_t m[NTS_KEM_PARAM_CEIL_K_BYTE] = {0};
-#endif
-    
-    /**
-     * Populate the generator matrix, but only the parity section
-     **/
-    for (i=0; i<NTS_KEM_PARAM_K; i++) {
-        Q[i][NTS_KEM_PARAM_R_DIV_64-1] = 0x0ULL;
-        memcpy(Q[i], pk_ptr, NTS_KEM_PARAM_CEIL_R_BYTE);
-        pk_ptr += NTS_KEM_PARAM_CEIL_R_BYTE;
-    }
-    
-    /**
-     * Step 3. Compute SHA3_256(e) to produce k_e
-     **/
-    sha3_256(e, NTS_KEM_PARAM_CEIL_N_BYTE, k_e);
-    
-#if defined(INTERMEDIATE_VALUES)
-    fprintf(stdout, "# Encap Step 3. k_e = SHA3_256(e)\n");
-    fprintf_uint8_vec(stdout, "k_e = ", k_e, kNTSKEMKeysize, "\n");
-#endif
-    
-#if INTERMEDIATE_VALUES > 1
-    fprintf(stdout, "# Encap Step 4. Message vector m\n");
-    memcpy(m, e, (NTS_KEM_PARAM_A >> 3));
-    memcpy(&m[NTS_KEM_PARAM_A >> 3], k_e, kNTSKEMKeysize);
-    fprintf_uint8_vec(stdout, "m = ", m, NTS_KEM_PARAM_CEIL_K_BYTE, "\n");
-#endif
-    
-    /**
-     * Step 4. Construct a length k message vector m = (e_a | k_e)
-     * Step 5. Perform systematic encoding with matrix Q,
-     *         i.e. c = ( m | mQ ) + e
-     *                = ( c_a | c_b | c_c )
-     *                = ( 0_a | c_b | c_c )
-     *          c_ast = ( c_b | c_c )
-     *
-     * The c_c (or parity block) is basically section c of the
-     * ciphertext. It's basically c_c = (e_a | k_e)*Q where Q
-     * is the last n-k bits of the generator matrix in reduced
-     * echelon form G = [ I | Q ].
-     */
-    memset(c_c, 0, sizeof(c_c));
-    for (i=0; i<NTS_KEM_PARAM_A >> LOG2; i++) {
-        memcpy(&v, &e[i*sizeof(v)], sizeof(v));
-        while (v) {
-            l  = (int32_t)lowest_bit_idx(v);
-            v ^= (ONE << l);
-            l += (BITSIZE*i);
-            for (j=0; j<NTS_KEM_PARAM_R_DIV_64; j++) {
-                c_c[j] ^= Q[l][j];
-            }
-        }
-    }
-    v = 0x0ULL;
-    memcpy(&v, &e[i*sizeof(v)], NTS_KEM_PARAM_A_REM);
-    while (v) {
-        l  = (int32_t)lowest_bit_idx(v);
-        v ^= (ONE << l);
-        l += (BITSIZE*i);
-        for (j=0; j<NTS_KEM_PARAM_R_DIV_64; j++) {
-            c_c[j] ^= Q[l][j];
-        }
-    }
-    for (i=0; i<NTS_KEM_PARAM_B >> LOG2; i++) {
-        memcpy(&v, &k_e[i*sizeof(v)], sizeof(v));
-        while (v) {
-            l  = (int32_t)lowest_bit_idx(v);
-            v ^= (ONE << l);
-            l += (BITSIZE*i) + NTS_KEM_PARAM_A;
-            for (j=0; j<NTS_KEM_PARAM_R_DIV_64; j++) {
-                c_c[j] ^= Q[l][j];
-            }
-        }
-    }
-    
-    /**
-     * The output is ciphertext containing the following section:
-     *
-     *     c = ( c_a | c_b | c_c )
-     *
-     * By construction, c_b = k_e and its length is kNTSKEMKeysize bytes,
-     * the length of c_a is (k/8 - kNTSKEMKeysize) bytes and the length of
-     * c_c is (n-k)/8 bytes.
-     *
-     * The error pattern e = ( e_a | e_b | e_c ), therefore, after
-     * adding e to c, c_a = 0, and we have
-     *
-     *     c_ast = ( k_e + e_b | c_c + e_c )
-     **/
-    memcpy(c_ast, k_e, kNTSKEMKeysize);                             /* k_e */
-    memcpy(&c_ast[kNTSKEMKeysize], c_c, NTS_KEM_PARAM_CEIL_R_BYTE); /* c_c */
-    
-    /**
-     * Perturb the NTS ciphertext with error pattern in section b and c.
-     *
-     * There is no need to perturb section a as we know it will result
-     * to 0 and we are going to drop this section anyway.
-     */
-    for (i=0; i<NTS_KEM_CIPHERTEXT_SIZE; i++) {
-        c_ast[i] ^= e[(NTS_KEM_PARAM_A>>3) + i];    /* c_b = k_e + e_b, c_c = c_c + e_c */
-    }
-    
-#if defined(INTERMEDIATE_VALUES)
-    fprintf(stdout, "# Encap Step 5. Systematic encoding with Q\n");
-    fprintf_uint8_vec(stdout, "c_b = ", c_ast, NTS_KEM_KEY_SIZE, "\n");
-    fprintf_uint8_vec(stdout, "c_c = ", &c_ast[NTS_KEM_KEY_SIZE], NTS_KEM_PARAM_CEIL_R_BYTE, "\n");
-#endif
-    
-    /**
-     * Step 6. Output the pair (k_r, c_ast) where k_r = SHA3_256(k_e | e)
-     *
-     * Construct (k_e | e) and obtain k_r = SHA3_256(k_e | e)
-     **/
-    memcpy(kr_in_buf, k_e, kNTSKEMKeysize);
-    memcpy(&kr_in_buf[kNTSKEMKeysize], e, NTS_KEM_PARAM_CEIL_N_BYTE);
-    sha3_256(kr_in_buf, kNTSKEMKeysize + NTS_KEM_PARAM_CEIL_N_BYTE, k_r);
-    
-#if defined(INTERMEDIATE_VALUES)
-    fprintf(stdout, "# Encap Step 6. Output the pair (k_r, c* = (c_b | c_c))\n");
-    fprintf_uint8_vec(stdout, "k_r = ", k_r, NTS_KEM_KEY_SIZE, "\n");
-#endif
-    
-    status = NTS_KEM_SUCCESS;
-    memset(kr_in_buf, 0, kNTSKEMKeysize + NTS_KEM_PARAM_CEIL_N_BYTE);
-    
-    return status;
 }
 
 /**
@@ -1361,13 +1336,20 @@ int compute_syndrome(const NTSKEM* nts_kem,
 }
 
 /**
- *  Permute the error vector
+ *  Permute the error and recover k_e
+ *
+ *  @note
+ *  This method performs Steps 7 and 8 of NTS-KEM decapsulation
  *
  *  @param[in]      e_prime Error vector in inverse permuted order
  *  @param[in]      p       Permutation vector p
  *  @param[out]     e       Error vector
+ *  @param[in,out]  k_e     Recovered vector k_e
  **/
-void permute_error(const uint8_t* e_prime, const ff_unit* p, uint8_t *e)
+void correct_error_and_recover_ke(const uint8_t* e_prime,
+                                  const ff_unit* p,
+                                  uint8_t *e,
+                                  uint8_t *k_e)
 {
     int32_t i;
     ff_unit a;
@@ -1385,6 +1367,7 @@ void permute_error(const uint8_t* e_prime, const ff_unit* p, uint8_t *e)
         a = p[i];
         bit_value = bit_value(e_prime_ptr, a);
         bit_set_value(e_ptr, i, bit_value); /* Permute e_prime */
+        bit_toggle_value((packed_t *)k_e, i-NTS_KEM_PARAM_A, bit_value); /* Step 8: recovering k_e */
     }
     for (; i<NTS_KEM_PARAM_N; i++) {
         a = p[i];

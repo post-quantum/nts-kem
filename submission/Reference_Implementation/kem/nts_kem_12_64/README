@@ -35,8 +35,8 @@ by executing the following command:
 
 ./bin/ntskem-12-64-kat
 
-It may take a while to run. It produces PQCkemKAT_328736.req and 
-PQCkemKAT_328736.rsp, which contains 100 runs of NTS-KEM key-generation,
+It may take a while to run. It produces PQCkemKAT_9248.req and 
+PQCkemKAT_9248.rsp, which contains 100 runs of NTS-KEM key-generation,
 encapsulation and decapsulation. The number of iterations can be changed
 from nist/PQCgenKAT.c file, look for KATNUM macro.
 
@@ -69,7 +69,7 @@ Key-generation:
 
 Encapsulation:
    Step 1-2. Randomly error vector e.
-   Step 3. The vector k_e = SHA3_256(e)
+   Step 3. The vector k_e = SHAKE256(e)
    Step 4. The message vector m
    Step 5. The two parts of the ciphertext: c_b and c_c
    Step 6. The vector k_r
@@ -80,7 +80,8 @@ Decapsulation:
    Step 1(e). The output of multipoint evaluation of sigma with FFT
    Step 1(f). The error vector e_prime
    Step 2. The permuted version of e_prime: vector e
-   Step 3. Re-encapsulate e with public-key Q to produce (k_r, c')
+   Step 3. The vector k_e, recovered from ciphertext and vector e
+   Step 4. Output of SHAKE256(e) and vector k_r
 
 Note that all random bytes are obtained using AES_CTR_DRBG (SP800-90A section 
 10.2.1.5.1), initialised by the per-run 'seed' value.
@@ -90,6 +91,6 @@ Note that all random bytes are obtained using AES_CTR_DRBG (SP800-90A section
 NTS-KEM team (in alphabetical order):
 - Martin Albrecht, martin.albrecht@rhul.ac.uk
 - Carlos Cid, carlos.cid@rhul.ac.uk
-- Kenneth G. Paterson, kenny.paterson@inf.ethz.ch
+- Kenneth G. Paterson, kenny.paterson@rhul.ac.uk
 - Cen Jung Tjhai, cjt@post-quantum.com
 - Martin Tomlinson, mt@post-quantum.com
