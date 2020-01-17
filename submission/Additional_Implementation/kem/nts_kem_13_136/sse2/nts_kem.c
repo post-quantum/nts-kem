@@ -1410,11 +1410,13 @@ void load_input_ciphertext(vector *out, const uint8_t *in)
 {
     int32_t i;
     const uint8_t *ptr = in;
+    uint8_t last_buf[ BLOCK_SIZE ] = { 0 };
 
     for (i=0; i<NTS_KEM_PARAM_BC_VEC-1; i++) {
         out[i] = _mm_loadu_si128((const __m128i *)ptr);
         ptr += (UINT64_SIZE*sizeof(uint64_t));
     }
+    memcpy(last_buf, ptr, NTS_KEM_CIPHERTEXT_SIZE - ((NTS_KEM_PARAM_BC_VEC-1)*BLOCK_SIZE/8));
     out[NTS_KEM_PARAM_BC_VEC-1] = _mm_setzero_si128();
-    out[NTS_KEM_PARAM_BC_VEC-1] = _mm_loadu_si128((const __m128i *)ptr);
+    out[NTS_KEM_PARAM_BC_VEC-1] = _mm_loadu_si128((const __m128i *)last_buf);
 }
