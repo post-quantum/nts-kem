@@ -499,7 +499,7 @@ int nts_kem_decapsulate(const uint8_t *sk,
     uint8_t kr_in_buf[kNTSKEMKeysize + NTS_KEM_PARAM_CEIL_N_BYTE];
     uint8_t xof_buf[kNTSKEMKeysize + NTS_KEM_PARAM_CEIL_N_BYTE];
     uint8_t c_buf[NTS_KEM_PARAM_CEIL_N_BYTE];
-    uint64_t mux_selector;
+    uint64_t mux_selector, bma_mask;
     uint64_t *out_ptr = NULL;
     const uint64_t *in_left_ptr = NULL;
     const uint64_t *in_right_ptr = NULL;
@@ -548,7 +548,7 @@ int nts_kem_decapsulate(const uint8_t *sk,
      * to obtain the error-locator polynomial σ(x)
      **/
     vector_load_2d_64(vec_syndromes, syndromes, 2*NTS_KEM_PARAM_T);
-    bitslice_bma(sigma, vec_syndromes, &extended_error);
+    bitslice_bma(sigma, vec_syndromes, &bma_mask, &extended_error);
     
     /**
      * Step 1e. Compute the roots of the error-locator polynomial σ(x)
@@ -560,7 +560,7 @@ int nts_kem_decapsulate(const uint8_t *sk,
     /**
      * Convert the coefficients of the locator polynomial in bit-slice format
      **/
-    bitslice_fft(evals, sigma, -(1ULL-extended_error));
+    bitslice_fft(evals, sigma, bma_mask);
 
     /**
      * Step 1f. Given Λ, obtain the error vector e_prime

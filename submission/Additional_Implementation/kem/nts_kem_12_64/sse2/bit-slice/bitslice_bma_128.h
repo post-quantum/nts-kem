@@ -17,6 +17,6 @@
 #include <stdint.h>
 #include <immintrin.h>
 
-void bitslice_bma(uint64_t (*out)[12], __m128i (*s)[12], int *xi);
+void bitslice_bma(uint64_t (*out)[12], __m128i (*s)[12], uint64_t *mask, int *xi);
 
 #endif /* __NTSKEM_BITSLICE_BMA_128_H */

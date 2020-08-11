@@ -76,7 +76,7 @@ static inline uint64_t bit_reverse(uint64_t x)
     return x;
 }
 
-void bitslice_bma(uint64_t (*out)[12], __m128i (*s)[PARAM_M], int *xi)
+void bitslice_bma(uint64_t (*out)[12], __m128i (*s)[PARAM_M], uint64_t *mask, int *xi)
 {
     int32_t i, j, c;
     int64_t R = 0LL, L = 0LL;
@@ -153,8 +153,13 @@ void bitslice_bma(uint64_t (*out)[12], __m128i (*s)[PARAM_M], int *xi)
     for (_d=0,j=0; j<PARAM_M; j++) {
         c = (vector_popcount_128(d[j]) & 1);
         d[j] = _mm_set1_epi64x((long long)-c);
+        _d |= c;
     }
     
+    d_eq_0 = EQ0(_d);
+    control = d_eq_0 || LT(i, L<<1);
+    R = MUX(control, R + d_eq_0, 0);
+
     bitslice_mul12_128(sigma, d, beta);
     bitslice_mul12_128(tmp, delta, psi);
     for (_d=0,j=0; j<PARAM_M; j++) {
@@ -165,10 +170,11 @@ void bitslice_bma(uint64_t (*out)[12], __m128i (*s)[PARAM_M], int *xi)
     __asm__ __volatile__ ("bsrq %1, %q0" : "=r" (L) : "rm" (_d));
     L = L + 1;
     *xi = CT_is_less_than(((int32_t)L), (int32_t)(PARAM_T - (R>>1)));
-    for (j=0; j<PARAM_M; j++) {
+    for (_d=CT_max(0, 63-L),j=0; j<PARAM_M; j++) {
         a |= (psi[j][0] & 1) << j;
-        out[0][j] = (bit_reverse(psi[j][0])); // >> (63 - PARAM_T + *xi)) & _d;
-        out[0][j] <<= (1 - *xi);
+        out[0][j] = (bit_reverse(psi[j][0]));
+        out[0][j] <<= (L/64);
+        out[0][j] >>= _d;
         out[0][j] |= (psi[j][1] & 1);
     }
 
@@ -177,4 +183,6 @@ void bitslice_bma(uint64_t (*out)[12], __m128i (*s)[PARAM_M], int *xi)
         inv[j] = -((a_inv >> j) & 1);
     }
     bitslice_mul12_64(out[0], out[0], inv);
+
+    *mask = (uint64_t)-(L/64);
 }
