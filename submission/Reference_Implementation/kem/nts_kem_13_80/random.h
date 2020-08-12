@@ -65,4 +65,9 @@ uint16_t random_uint16_bounded(uint16_t bound);
  **/
 uint8_t randombit();
 
+/**
+ *  Reset the randomness, only used this method for testing.
+ **/
+void random_reset();
+
 #endif /* __NTSKEM_RANDOM_H */

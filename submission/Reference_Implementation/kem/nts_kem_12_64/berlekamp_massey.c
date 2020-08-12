@@ -117,7 +117,6 @@ poly *berlekamp_massey(const FF2m *ff2m,
         ex->coeff[i] = ff2m->ff_mul(ff2m, sigma[ex->degree-i], inv); /* Reverse the returned polynomial */
     }
     *extended_error = CT_is_less_than(ex->degree, t - (R>>1));
-    
 BMA_fail:
     if (varphi) {
         memset(varphi, 0, (t+1)*sizeof(ff_unit));

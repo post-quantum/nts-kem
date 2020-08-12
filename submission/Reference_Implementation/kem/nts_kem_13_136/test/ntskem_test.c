@@ -3,7 +3,7 @@
  *  NTS-KEM test
  *
  *  Parameter: NTS-KEM(13, 136)
- *
+ *  
  *  This file is part of the reference implemention of NTS-KEM
  *  submitted as part of NIST Post-Quantum Cryptography
  *  Standardization Process.
@@ -16,6 +16,9 @@
 #include "ntskem_test.h"
 #include "random.h"
 
+#define DETERMINISTIC
+
+#ifdef DETERMINISTIC
 uint8_t* hexstr_to_char(const char* hexstr, int32_t *size)
 {
     int i, j;
@@ -37,6 +40,7 @@ uint8_t* hexstr_to_char(const char* hexstr, int32_t *size)
     
     return buffer;
 }
+#endif
 
 int testkem_nts(int iterations)
 {
@@ -46,45 +50,52 @@ int testkem_nts(int iterations)
 #if !defined(DETERMINISTIC)
     FILE *fp = NULL;
 #endif
+    unsigned char *nonce = NULL;
+    int32_t nonce_size = 48;
+
     unsigned char entropy_input[] = {
-        0xaa, 0xe7, 0xd7, 0x4e, 0x3c, 0x3a, 0x52, 0xdd,
-        0x87, 0xc7, 0x2a, 0xa4, 0x38, 0x54, 0x7e, 0x37,
-        0x1e, 0x97, 0x29, 0x78, 0x22, 0xa2, 0xcd, 0x83,
-        0x43, 0x64, 0x84, 0xcf, 0x77, 0x6b, 0x9e, 0xa5,
-        0x53, 0xf3, 0x50, 0xc5, 0xc7, 0x8d, 0x46, 0xb3,
-        0xa5, 0xf2, 0xe3, 0x99, 0x63, 0x10, 0x1d, 0x10
+        0x8a, 0x94, 0x42, 0x02, 0xc2, 0x7f, 0xf7, 0x28,
+        0xc8, 0xa5, 0x8e, 0x72, 0x21, 0x7b, 0x1e, 0x5f,
+        0x06, 0x3e, 0x57, 0x15, 0x5f, 0x83, 0xb4, 0x15,
+        0x90, 0xae, 0x15, 0xff, 0x96, 0x1a, 0x77, 0x07,
+        0x2e, 0xd2, 0x3a, 0x83, 0x22, 0x9f, 0xbe, 0x6d,
+        0x94, 0x5a, 0xba, 0x18, 0x00, 0x00, 0x00, 0x00
     };
-    unsigned char nonce[48];
-    /*
-     unsigned char *nonce = NULL;
-     int32_t nonce_size = 48;
-     */
-    
+
     fprintf(stdout, "NTS-KEM(%d, %d) Test\n", NTSKEM_M, NTSKEM_T);
 
     do {
 #if defined(DETERMINISTIC)
-        /*
+        const char* nonce_str = "06da3ca3a77433e4dca45d64b148bb4c0dfb3e3a4127472f43cd71ab332d17c8a7c42dd8b1b14b49d82dcaf77a566290";
         nonce = hexstr_to_char(nonce_str, &nonce_size);
-        */
-        memset(nonce, 0, sizeof(nonce));
 #else
+        nonce = (unsigned char*)calloc(sizeof(unsigned char), nonce_size);
         if ((fp = fopen("/dev/urandom", "r"))) {
-            if ((sizeof(entropy_input) != fread(entropy_input, 1, sizeof(entropy_input), fp)) ||
-                (sizeof(nonce) != fread(nonce, 1, sizeof(nonce), fp))) {
+            if (nonce_size != fread(nonce, 1, nonce_size, fp)) {
                 status = 0;
                 break;
             }
         }
         fclose(fp);
 #endif
+#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+		i = ( (((uint32_t)it) << 24) & 0xFF000000 ) |
+		    ( (((uint32_t)it) <<  8) & 0x00FF0000 ) |
+		    ( (((uint32_t)it) >>  8) & 0x0000FF00 ) |
+		    ( (((uint32_t)it) >> 24) & 0x000000FF );
+        memcpy(&entropy_input[48-sizeof(i)], &i, sizeof(i));
+#else
         memcpy(&entropy_input[48-sizeof(it)], &it, sizeof(it));
+#endif
         
         fprintf(stdout, "Iteration: %d, Seed: ", it);
-        for (i=0; i<sizeof(entropy_input); i++) fprintf(stdout, "%02x", entropy_input[i]);
-        fprintf(stdout, "\n"); fflush(stdout);
-        
+        for (i=0; i<nonce_size; i++) fprintf(stdout, "%02x", entropy_input[i]);
+        fprintf(stdout, ", "); fflush(stdout);
+        fprintf(stdout, "Nonce: "); for (i=0; i<nonce_size; i++) fprintf(stdout, "%02x", nonce[i]);
+        fprintf(stdout, "\n");        
+
         randombytes_init(entropy_input, nonce, 256);
+        random_reset();
 
         pk = (uint8_t *)calloc(CRYPTO_PUBLICKEYBYTES, sizeof(uint8_t));
         sk = (uint8_t *)calloc(CRYPTO_SECRETKEYBYTES, sizeof(uint8_t));
@@ -108,9 +119,7 @@ int testkem_nts(int iterations)
         free(ciphertext);
         free(sk);
         free(pk);
-        /*
         if (nonce) free(nonce);
-        */
     }
     while (status && ++it < iterations);
 
